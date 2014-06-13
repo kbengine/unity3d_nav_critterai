@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="6fb3041b-e9be-4f03-868b-dcac944df19b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+   
+    <introduction>
+		
+			<para>
+			In order to use the advanced navigation mesh build features you will need to understand the core NMGen build process,
+			and in order to understand that process you'll need to understand heightfields.  There are two types of heightfields: 
+			<externalLink>
+				<linkText>voxel</linkText>
+				<linkUri>http://en.wikipedia.org/wiki/Voxel</linkUri>
+				<linkTarget>_blank</linkTarget>
+			</externalLink>
+			field, and vertex fields.  Voxel fields include
+			<codeEntityReference>T:org.critterai.nmgen.Heightfield</codeEntityReference> and 
+			<codeEntityReference>T:org.critterai.nmgen.CompactHeightfield</codeEntityReference> objects.
+			Vertext fields include <codeEntityReference>T:org.critterai.nmgen.ContourSet</codeEntityReference> and 
+			<token>PolyMesh</token> objects.
+      </para>
+			
+    </introduction>
+
+    <section address="basicStructure">
+    
+      <title>Basic Heightfield Structure</title>
+      
+      <content>
+      
+        <para>
+				Consider an <token>AABB</token> at an arbitrary location in 
+        <externalLink>
+					<linkText>euclidean space</linkText>
+					<linkUri>http://en.wikipedia.org/wiki/Euclidean_space</linkUri>
+					<linkTarget>_blank</linkTarget>
+	    	</externalLink>. Its bounds are defined by a minimum and maximum vertex.
+				</para>
+	    
+	    <mediaLink><image xlink:href="Heightfield-AABB"/></mediaLink>
+	    
+	    <para>
+			Now slice the box into vertical columns of uniform width and depth (XZCellSize). The columns make up a grid.
+			</para>
+	    
+	    <mediaLink><image xlink:href="Heightfield-Columns"/></mediaLink>
+	 
+	    <para>
+			Now slice the columns in uniform increments up the height axis (YCellSize), 
+	    breaking the columns into small axis-aligned boxes. The boxes represent a voxel field. 
+	    The vertices at the eight corners of the boxes represent a vertex field.
+			</para>
+	    
+	    <mediaLink><image xlink:href="Heightfield-VoxelGrid"/></mediaLink>
+	    
+	    <para>
+			Vertex fields are fairly easy to understand.  They are simply a way of representing vertices laid out in a grid pattern.
+	    But voxel fields require a bit more explanation...
+			</para>
+	    
+      </content>
+      
+    </section>
+    
+	<section address="solidHeightfield">
+	
+	  <title>The Solid Heightfield</title>
+	  
+	  <content>
+	 
+	    <para>
+			In this documentation, the term voxel is usually discarded in favor of 
+	    span because spans are how voxel information is compressed by NMGen objects.
+			</para>
+	    
+	    <para>
+			Consider a column of voxels. The area defined by each voxel is either solid, 
+	    representing obstructed space, or open, representing space that does not contain any 
+	    obstructions.
+			</para>
+	    
+	    <mediaLink><image xlink:href="Heightfield-ColumnVoxels"/></mediaLink>
+	    
+	    <para>
+			We merge the contiguous solid voxels within the column and we get a span of solid voxels.
+			</para>
+	    
+	    <mediaLink><image xlink:href="Heightfield-SolidSpan"/></mediaLink>
+	    
+	    <para>
+			These solid spans, represented by the 
+	    <codeEntityReference>T:org.critterai.nmgen.HeightfieldSpan</codeEntityReference> structure,
+	    are combined to form a 
+	    <codeEntityReference>T:org.critterai.nmgen.Heightfield</codeEntityReference> 
+	    representing obstructed space.
+			</para>
+	    
+	    <mediaLink><image xlink:href="Heightfield-SolidField"/></mediaLink>
+	    
+	  </content>
+	  
+	</section>
+
+	<section address="openHeightfield">
+	
+	  <title>The Open Compact Heightfield</title>
+	  
+	  <content>
+	 
+	    <para>
+			We don't only care about solid space. Many algorithms operate on the space above solid spans. 
+	    For navigation mesh generation this is the most important part of solid space, its upper surface. 
+	    Open spans represent this space.
+			</para>
+	    
+	    <para>
+			It is important to note that this is not a simple inversion of the solid space. If an
+	    open heightfield column does not contain any solid spans, then it doesn't have any open spans. 
+	    Also, the area below the lowest solid span is ignored. An open span extends from the top of a solid 
+	    span to the bottom of the next higher solid span in the column. (Or to "infinity" if there 
+	    is no higher solid span.)
+	    </para>
+	 
+	 		<para></para>
+			<alert class="note">
+			
+				<para>
+				Though it may not be obvious at first glance, this example is the open space representation of the previous example. 
+				Three open spans are fully visualized.
+				</para>
+				
+			</alert>
+		
+
+      <mediaLink><image xlink:href="Heightfield-OpenField"/></mediaLink>
+	 
+	    <para>
+			The open spans, represented by the <codeEntityReference>T:org.critterai.nmgen.CompactSpan</codeEntityReference> structure,
+	    are combined to form a <codeEntityReference>T:org.critterai.nmgen.CompactHeightfield</codeEntityReference> representing open space.
+			</para>
+	
+	  </content>
+	  
+	</section>
+    
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nmgen.Heightfield</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmgen.CompactHeightfield</codeEntityReference>
+	
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- NMGenIntro -->
+		<link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> <!-- NMGenBuildProcess -->
+	
+	</relatedTopics>
+    
+  </developerConceptualDocument>
+</topic>

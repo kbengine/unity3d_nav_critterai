@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+	<topic id="40b9b3c3-f08f-4fcf-b85f-37efea236d43" revisionNumber="1">
+	  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+	
+		<introduction>
+	
+		  <para>
+			The navigation mesh query is the most important class to understand since most navigation clients will interact with the query 
+			rather than the navigation mesh itself.  The mesh contains the data, but the query provides almost all of the features
+			necessary for pathfinding.
+			</para>
+			
+			<para>
+			Core Class: <token>NavmeshQuery</token>
+			</para>
+		 
+			<para>
+			Query features fall into two general categories:  Pathfinding and local search.
+			</para>
+			
+			<para>
+			Pathfinding involves standard A* and Dijkstra searches that find the best path(s) between two points.  Paths are made up of
+			a list polygon references that represent a polygon corridor from the start to the end position.  Path straightening is used to 
+			convert the path into a list of waypoints.  (I.e. String pulling.)
+			</para>
+			
+			<para>
+			The local search features offer various methods for locating polygons and points on polygons, and for querying
+			the local environment.  I.e. Raycasting, finding the distance to the nearest wall, etc.
+			</para>
+			
+			<para>
+			Many of the query methods require a <token>NavmeshQueryFilter</token>.  Filters define area traversal costs as well as flags
+			used for including/excluding polygons and off-mesh connections from results.
+			</para>
+			
+			<para>
+			The best way to understand the query class is to play around with it.  The <token>CAINavExplorerDownload</token> includes the Query Explorer
+			demo that permits experimentation with all of the main query features.
+			</para>
+		 
+		</introduction>
+		
+		<section>
+		
+			<title>Common Operations</title>
+			
+			<content>
+			
+				<para>
+				This section contains some simple examples of common query operations.
+				</para>
+			
+				<section>
+				
+					<title>Finding a Point in the Navigation Mesh</title>
+					
+					<content>
+					
+						<para>
+						You can't do much without first getting a valid point on the navigation mesh. So the first step is to find one.
+						</para>
+						
+					  <para>
+						<codeEntityReference>
+						M:org.critterai.nav.NavmeshQuery.GetNearestPoint(UnityEngine.Vector3,UnityEngine.Vector3,org.critterai.nav.NavmeshQueryFilter,org.critterai.nav.NavmeshPoint@)
+						</codeEntityReference>
+						</para>
+					  
+						<code>
+						
+						// Where 'query' is a NavmeshQuery object and 'filter' is a NavmeshQueryFilter object.
+						// 'position' is a Vector3 indicating the world position of the client.
+						
+						NavmeshPoint result;
+						Vector3 extents = new Vector3(1, 1, 1);  // Keep this to the minimum extents practical.
+						
+						NavStatus status = query.GetNearestPoly(position, extents, filter
+								, out result);
+						
+						if (result.polyRef == Navmesh.NullPoly)
+						{
+								// Handle error.  Could not find a result.
+								// The status can be checked to see if there was an error.  If not, then
+								// the cause is that the search extents did not overlap any polygons.
+						}
+						
+						// Use the result point, which includes a vector point and the reference of 
+						// the polygon that contains the point. 
+							
+						</code>
+					
+					</content>
+				
+				</section>
+			
+				<section>
+				
+					<title>Basic Pathfinding</title>
+					
+					<content>
+					
+						<para>
+						Even if you are planning to use <token>PathCorridor</token> or <token>CrowdManager</token>,
+						you'll always need to do long distance planning using the basic <token>NavmeshQuery</token> features.  
+						First, get a path, then optionally straighten it.
+						</para>
+
+						<code>
+						
+						// Where 'query' is a NavmeshQuery object and 'filter' is a NavmeshQueryFilter object.
+						// 'start' and 'end' are NavmeshPoints known to be on the navigation mesh.
+						
+						int pathCount;
+						// The path will be a list of polygon references.
+						uint[] path = new uint[100];  // Size for maximum allowed path length.
+						NavStatus status;
+						
+						if (start.polyRef == end.polyRef)
+						{
+								// No need to do any planning.
+								pathCount = 1;
+								path[0] = start.polyRef;
+						}
+						else
+						{
+								status = query.FindPath(start, end, filter, path
+										, out pathCount);
+						
+								if (NavUtil.Failed(status) || path.pathCount == 0)
+								{
+										// Handle pathfinding failure.
+								}
+								else if (end.polyRef != path[pathCount - 1])
+								{
+								    // Handle a partial path.
+								    // The query either could not reach the end point,
+								    // or the path buffer was too small to hold the
+								    // entire path.  (A check of 'status' will reveal if
+								    // the buffer was too small.)
+								}
+						
+						}
+						
+						// If you need to straighten the path...
+						
+						const int MaxStraightPath = 4;  // Just getting the first 4 waypoints.
+						int wpCount;
+						
+						// The waypoints.
+						Vector3[] wpPoints = new Vecotr3[MaxStraightPath];
+						
+						// A list of polygon references.  (The polygon being entered at each waypoint.)
+						uint[] wpPath = new uint[MaxStraightPath];
+						
+						// The type of each waypoint. (Start, end, off-mesh connection.)
+						WaypointFlag[] wpFlags = new WaypointFlag[MaxStraightPath];
+
+						status = query.GetStraightPath(start.point
+								, goal.point
+								, path
+								, 0                // The index of the start of the path.
+								, pathCount        // The length of the path.
+								, wpPoints
+								, wpFlags
+								, wpPath
+								, out wpCount);
+						
+						if (NavUtil.Failed(status) || wpCount == 0)
+						{
+								// Handle the failure.  There should always be at least one waypoint 
+								// (the goal) for a valid point/path combination,
+						}
+						
+						// Use the path and waypoints.
+						
+						</code>
+					
+					</content>
+				
+				</section>
+			
+			</content>
+		
+		</section>
+	
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nav.Navmesh</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshQuery</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshQueryFilter</codeEntityReference>
+	
+		<link xlink:href="1b3cfec9-7cd3-444c-b83d-dfc551454822"/> <!-- Nav Intro -->
+		<link xlink:href="6cf1c77d-725a-4f3e-bcbf-62e7fc5e2bc6"/> <!-- Navmesh -->
+		<link xlink:href="24e74166-c465-4e0b-87eb-818c4f7f3a32"/> <!-- PathCorridor -->
+		<link xlink:href="2b87d0be-b6ae-409d-97eb-2a3b37c508ad"/> <!-- CrowdManager -->
+	
+	</relatedTopics>
+	
+	  </developerConceptualDocument>
+	</topic>

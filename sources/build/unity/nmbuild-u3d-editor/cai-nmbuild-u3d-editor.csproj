@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8823F2CF-1139-41BF-BD47-A456B7FEE336}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>org.critterai</RootNamespace>
+    <AssemblyName>cai-nmbuild-u3d-editor</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Release\cai-nmbuild-u3d-editor.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmbuild-u3d\Editor\*.cs" />
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmbuild-u3d\Editor\input\*.cs">
+      <Link>input\fakename.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmbuild-u3d\Editor\controls\*.cs">
+      <Link>controls\fakename.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmbuild-u3d\Editor\views\*.cs">
+      <Link>views\fakename.cs</Link>
+    </Compile>
+    <Compile Include="..\..\assemblyInfo\cai-nmbuild-u3d-editor.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\nav-u3d-editor\cai-nav-u3d-editor.csproj">
+      <Project>{8093F287-EA45-46ab-AF58-710DA654392E}</Project>
+      <Name>cai-nav-u3d-editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nav-u3d\cai-nav-u3d.csproj">
+      <Project>{D2154397-4098-4170-BBB0-58714D84E4C8}</Project>
+      <Name>cai-nav-u3d</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nmbuild\cai-nmbuild.csproj">
+      <Project>{08B1606A-B8CD-4725-AF68-A9CC8CEAE336}</Project>
+      <Name>cai-nmbuild</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nmgen\cai-nmgen.csproj">
+      <Project>{9DFC1FE0-6469-4a04-AB13-9EAC59087802}</Project>
+      <Name>cai-nmgen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\util-u3d-editor\cai-util-u3d-editor.csproj">
+      <Project>{1FF01BFD-2593-406A-959E-D4D84CEB662C}</Project>
+      <Name>cai-util-u3d-editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\util-u3d\cai-util-u3d.csproj">
+      <Project>{AF812AB8-633B-4e23-ABA7-6D02082FB2EE}</Project>
+      <Name>cai-util-u3d</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nav\cai-nav.csproj">
+      <Project>{42218E47-156D-46ff-84E0-119D47B0E4EB}</Project>
+      <Name>cai-nav</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\util\cai-util.csproj">
+      <Project>{C4B32B85-13F0-42b8-AC89-770BEFEAF022}</Project>
+      <Name>cai-util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

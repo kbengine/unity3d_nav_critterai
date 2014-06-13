@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <item id="AABB"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>AABB</ddue:linkText>
+    <ddue:linkUri>http://en.wikipedia.org/wiki/Bounding_volume</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="DiscussionGroup"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>Discussion Group</ddue:linkText>
+    <ddue:linkUri>http://groups.google.com/group/critterai</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="Mikko"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>Mikko Mononen</ddue:linkText>
+    <ddue:linkUri>http://digestingduck.blogspot.com/</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="ProjectHome"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>Project Home</ddue:linkText>
+    <ddue:linkUri>http://www.critterai.org/</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="ProjectSource"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>CAINav Source</ddue:linkText>
+    <ddue:linkUri>http://code.google.com/p/critterai/source/browse/</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="RecastNavigation"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>Recast Navigation</ddue:linkText>
+    <ddue:linkUri>http://code.google.com/p/recastnavigation/</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="Unity"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>Unity</ddue:linkText>
+    <ddue:linkUri>http://unity3d.com/</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="UnityPro"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>Unity Pro</ddue:linkText>
+    <ddue:linkUri>http://unity3d.com/</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="IssuesList"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>Issues List</ddue:linkText>
+    <ddue:linkUri>http://code.google.com/p/critterai/issues/list</ddue:linkUri>
+</ddue:externalLink></item>
+</content>

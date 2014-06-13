@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+
+      <para>
+			This topic covers the core process used by NMGen to create polygon data that will represent the navigation mesh surface.
+			There are many variations on the mesh generation process, but they all include these steps.
+			</para>
+      
+			<para>
+			The <token>IncrementalBuilder</token> extension implements this process.
+			</para>
+      
+      <para>
+			The high level process is as follows:
+			</para>
+      
+      <list class="ordered">
+      
+        <listItem>
+          <externalLink>
+	        <linkText>Voxelization</linkText>
+	        <linkUri>http://www.cs.sunysb.edu/~vislab/projects/volume/Papers/Voxel/index.html</linkUri>
+	        <linkTarget>_blank</linkTarget>
+	      </externalLink>: Create a solid heightfield from the source geometry representing obstructed space.
+        </listItem>
+        
+        <listItem>Generate Regions: Detect the upper surface of the solid heightfield and divide it up 
+        into regions of contiguous spans.</listItem>
+        
+        <listItem>
+          Generate Contours: Detect the contours of the regions and form them into 
+          <externalLink>
+	        <linkText>simple polygons</linkText>
+	        <linkUri>http://en.wikipedia.org/wiki/Polygon#Convexity_and_types_of_non-convexity</linkUri>
+	        <linkTarget>_blank</linkTarget>
+	      </externalLink>.
+        </listItem>
+        
+        <listItem>Generate Polygon Mesh: Sub-divide the contours into convex polygons.</listItem>
+        
+        <listItem>Generate Height Detail:
+          <externalLink>
+	        <linkText>Triangulate</linkText>
+	        <linkUri>http://mathworld.wolfram.com/Triangulation.html</linkUri>
+	        <linkTarget>_blank</linkTarget>
+	      </externalLink> the polygon mesh and add height detail. (Optional)
+	    </listItem>
+        
+      </list>
+
+    </introduction>
+   
+    <section address="voxelization">
+    
+      <title>Voxelization</title>
+      
+      <content>
+
+        <para>
+				Core Class:  <codeEntityReference>T:org.critterai.nmgen.Heightfield</codeEntityReference>
+        </para>
+        
+        <para
+				>During voxelization the source geometry is abstracted into a heightfield which represents 
+        obstructed space. Then some initial culling of un-walkable surfaces is performed.
+				</para>
+        
+        <para>
+				Each triangle in the source geometry is voxelized using conservative voxelization and 
+        added to the field. Conservative voxelization is an algorithm that ensures the triangle surfaces 
+        are completely encompassed by the the generated voxels.
+				</para>
+				
+        <para>
+				After voxelization, the solid heightfield contains spans that completely encompass the 
+        surface of all polygons in the source geometry.
+				</para>				
+        
+        <mediaLink><image xlink:href="VoxelizedTriangle"/></mediaLink>
+        
+      </content>
+      
+    </section>
+    
+    <section address="regionGeneration">
+    
+      <title>Region Generation</title>
+      
+      <content>
+
+        <para>
+				Core Class: <codeEntityReference>T:org.critterai.nmgen.CompactHeightfield</codeEntityReference>
+        </para>
+        
+        <para>
+				The goal of this stage is to further define what portion of the solid surface is 
+        traversable, and to segregate the traversable areas into contiguous regions of spans 
+        (surfaces) that can eventually be formed into simple polygons.
+				</para>
+        
+        <para>
+				The first step is to translate the solid heightfield into an open heightfield which 
+        represents the potential traversable surfaces on top of the solid space. An open heightfield 
+        represents the potential floor area on the surface of solid space.
+				</para>
+        
+        <para>
+				In the below example, the green area represents the floor defined by the open spans. 
+        These correspond to the top of all traversable spans in the solid heightfield. Note that walls, 
+        areas under the tables, and some thin areas such as the balcony banisters were culled during 
+        the solid heightfield generation process. Some un-walkable areas such as table tops, the stair
+        banisters, and thin wall ledges still show as traversable at this point.
+				</para>
+        
+        <mediaLink><image xlink:href="Stage-OpenHeightfield"/></mediaLink>
+        
+        <para>
+				Next, further culling of un-walkable spans occurs. At the end of the process, open spans 
+        are only considered traversable if they pass the following tests:
+				</para>
+        
+				<list class="bullet">
+				
+					<listItem>The span is not too close to an obstruction. (Such as walls, furniture, etc.) 
+					(WalkableRadius)</listItem>
+					
+					<listItem>The span has sufficient unobstructed space above its floor. 
+					(Agents can legally walk on the span without colliding with objects above the span.) 
+					(WalkableHeight)</listItem>
+					
+				</list>
+        
+        <para>
+				Neighbor information is generated for all surviving open spans to help group them 
+        together into true surface areas. The algorithm takes into account a maximum vertical step 
+        threshold to determine which spans can connect. (WalkableStep)
+        This permits structures such as stairs, curbs, table tops, etc. to be properly taken into 
+        account. For example, spans that make up different steps in a stairway will be connected 
+        as neighbors. But spans on a table top will not be connected to spans that make
+        up the adjacent floor.
+				</para>
+        
+        <para>
+				Regions are generated using the neighbor information and the watershed algorithm. 
+        Region size is optimized and island regions too small to be of use (e.g. table tops) 
+        are culled. (MinRegionArea)
+				</para>
+        
+        <para>
+				The below example shows regions. Note that regions flow up the stairs, even though 
+        the spans that make up stairways don't actually connect. Also note that the table tops, 
+        stair banisters, and all other un-walkable surfaces that made it through the
+        solid heightfield generation process have been successfully culled. (Black indicates 
+        culled spans.)
+				</para>
+		
+				<mediaLink><image xlink:href="Stage-Regions"/></mediaLink>
+				
+				<para>
+				At the end of this stage, the traversable surface is represented by regions of 
+				connected spans.
+				</para>
+
+      </content>
+      
+      </section>
+      
+      
+	  <section address="contourGeneration">
+	  
+	    <title>Contour Generation</title>
+	    <content>
+	    
+	      <para>
+				Core Class:  <codeEntityReference>T:org.critterai.nmgen.ContourSet</codeEntityReference>
+	      </para>
+	      
+	      <para>
+				The contours of the regions are 'walked', forming simple polygons. This is the 
+	      first step in the process of moving from voxel space back into vector space.
+				</para>
+	      
+	      <para>
+				First, highly detailed polygons are generated from the regions.
+				</para>
+	      
+	      <mediaLink><image xlink:href="Stage-RawContour"/></mediaLink>
+	      
+	      <para>
+				Next, various algorithms are used to accomplish the following:
+				</para>
+	      
+				<list class="bullet">
+			
+					<listItem>
+					Simplify the edges between adjacent polygons. (The portals between regions.)
+					</listItem>
+				
+					<listItem>
+					Simplify the border edges (Border edges are the contour edges that connect to 
+					empty or obstructed space.) (EdgeMaxDeviation)
+					</listItem>
+				
+					<listItem>
+					Optimize the length of the border edges. (Borders that are too long can form 
+					non-optimal triangles later in the process.) (MaxEdgeLength)
+					</listItem>
+				
+				</list>
+	      
+	      <para>
+				This next example shows the contours after these algorithms have been run.
+				</para>
+	      
+	      <mediaLink><image xlink:href="Stage-SimplifiedContour"/></mediaLink>
+	      
+	      <para>
+				At the end of this stage, the traversable surface is represented by simple polygons.
+				</para>
+	      
+	    </content>
+	    
+	  </section>
+
+	  <section address="convexPolyGen">
+	  
+	    <title>Convex Polygon Generation</title>
+			
+	    <content>
+	    
+	      <para>
+				Core Class:  <token>PolyMesh</token>
+				</para>
+	      
+	      <para>
+				Many algorithms can only be used with convex polygons. So this step subdivides 
+	      the simple polygons that make up the contours into a mesh of convex polygons.
+				</para>
+	      
+				<para></para>
+	      <alert class="note">
+				
+					<para>
+					This is the mesh used for most pathfinding purposes.
+					</para>
+				
+	      </alert>
+	      
+	      <para>
+				Below you can see that a mixture of concave polygons have been formed from the contours.
+				</para>
+	      
+	      <mediaLink><image xlink:href="Stage-PolyMesh"/></mediaLink>
+	      
+	      <para>
+				At the end of this stage, the traversable surface is represented by a mesh of 
+	      convex polygons.
+				</para>
+	      
+	    </content>
+	    
+	  </section>
+      
+	  <section address="detailMeshGen">
+	  
+	    <title>Height Detail Generation</title>
+			
+	    <content>
+	    
+	      <para>
+				Core Class: <token>DetailMesh</token>
+				</para>
+	      
+	      <para>
+				In the final stage, the convex polygon mesh is triangulated using
+	      <externalLink>
+	        <linkText>Delaunay triangulation</linkText>
+	        <linkUri>http://en.wikipedia.org/wiki/Delaunay_triangulation</linkUri>
+	        <linkTarget>_blank</linkTarget>
+	      </externalLink> so that height detail can be added. Vertices are added internally and to the 
+	      edges of polygons to ensure the original geometry's surface is adequately followed.
+	      (DetailSampleDistance and DetailMaxDeviation)
+				</para>
+	      
+				<para></para>
+	      <alert class="note">
+				
+					<para>
+					Technically, this is an optional step.  The detail mesh is not required for 
+					pathfinding.  But certain queries will return more accurate height data if the 
+					detail mesh is available.
+	      	</para>
+					
+	      </alert>
+	      
+	      <mediaLink><image xlink:href="Stage-DetailMesh"/></mediaLink>
+	      
+	    </content>
+	    
+	  </section>
+    
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nmbuild.IncrementalBuilder</codeEntityReference>	
+		<codeEntityReference>T:org.critterai.nmgen.PolyMesh</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmgen.PolyMeshDetail</codeEntityReference>
+
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- NMGenIntro -->
+		<link xlink:href="6fb3041b-e9be-4f03-868b-dcac944df19b"/> <!-- HeightfieldIntro -->
+	
+	</relatedTopics>
+    
+  </developerConceptualDocument>
+</topic>

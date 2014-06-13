@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3bea0158-1703-414c-bf1f-a47e47b12f48" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+		
+      <para>
+			Depending on the way <application>CAINav</application> is built, it will use either the UnityEngine vectors or the <application>CAINav</application> built-in vectors.  
+			For <token>Unity</token> users, UnityEngine.Vector3 and UnityEngine.Vector2.  For .NET-Only users, org.critterai.Vector3 and org.critterai.Vector2.  This is great for Unity users,  
+			but means that .NET-users will probably need to marshal between their native vector structures and the <application>CAINav</application> structures.
+			</para>
+			
+			<para>
+			Advanced users have another option.  It may be possible, with only an hour or two of work per version upgrade, to swap your own native vectors
+			into <application>CAINav</application>.  This topic will cover the steps to accomplish this.
+			</para>
+			
+    </introduction>
+
+    <section>
+		
+      <title>Overview</title>
+			
+      <content>
+			
+        <para>
+				In order to swap your own native vectors into <application>CAINav</application>, you'll need to follow these steps:
+				</para>
+				
+				<list class="ordered">
+					<listItem>Validate that your vector API is compatible.</listItem>
+					<listItem>Update the .NET Visual Studio Projects and code. (Mostly a simple search and replace.)</listItem>
+					<listItem>Build and validate vector data compatibility.</listItem>
+				</list>
+				
+      </content>
+
+			<alert class="note">
+				<para>
+				This topic only covers the Vector3 structure.  The same basic process can be used for the Vector2 structure.  Data compatibility validation is not
+				required for Vector2 since it is not involved in interop operations.
+				</para>
+			</alert>
+
+    </section>
+		
+    <section>
+		
+      <title>Validate API Compatibility</title>
+			
+      <content>
+			
+        <para>
+				The first step is to make sure your native vector's API is compatible with org.critterai.Vector3.  To do this, open the .NET Visual Studio
+				project.  It is located in the \build\dotNet directory of the distribution.  The source file will be located in the cai-util project.  The 
+				Vector3 structure is kept very simple, so the likelihood of conflict is minimal.
+				</para>
+				
+				<para>
+				While you will be validating data compatibility later, it is a good idea to smoke check that now. (Do the order of the fields match?)
+				</para>
+				
+      </content>
+
+    </section>
+		
+		<section>
+		
+      <title>Update the Visual Studio Projects and Code</title>
+			
+      <content>
+			
+        <para>
+				Add a reference to your vector library to each project in the Visual Studio solution.
+				</para>
+				
+				<para>
+				Throughout the <application>CAINav</application> code the following conditional compile statement is used to control which vector is used:
+				</para>
+				
+				<code>
+					#if NUNITY
+					using Vector3 = org.critterai.Vector3;
+					#else
+					using Vector3 = UnityEngine.Vector3;
+					#endif
+				</code>
+				
+				<para>
+				So all you need to do to swap in your own vector is to do a global search and replace. Find "using Vector3 = org.critterai.Vector3;", and
+				replace it with your own.  For example: "using Vector3 = MyEngine.Vector3f;"
+				</para>
+				
+				<para>
+				Browse to the Vector3 source file in the cai-util project and comment out all code.  This makes sure that errors don't accidentally result
+				in the <application>CAINav</application> vector still being referenced somewhere.
+				</para>
+				
+				<para>
+				Finally, build the solution.  It your API is truly compatible, the build should complete without errors.
+				</para>
+				
+      </content>
+
+    </section>
+		
+    <section>
+		
+      <title>Validate Data Compatibility</title>
+			
+      <content>
+			
+        <para>
+				The final step is to check data capatibility.  (Is the internal data format of your vector the same as the <application>CAINav</application> vector?)  To do this, write some
+				test code that uses the new libraries and run the <codeEntityReference>M:org.critterai.nav.NavUtil.TestVector(UnityEngine.Vector3)</codeEntityReference> and 
+				<codeEntityReference>M:org.critterai.nav.NavUtil.TestVectorArray(UnityEngine.Vector3[],System.Int32,UnityEngine.Vector3[])</codeEntityReference> test methods.
+				</para>
+				
+				<para>
+				If the input and output of these test methods matches exactly, then you are good to go. If the tests fail, then you know that there is some
+				sort of problem and you won't be able to use your native vectors.
+				</para>
+				
+			</content>
+
+    </section>
+		
+  </developerConceptualDocument>
+</topic>

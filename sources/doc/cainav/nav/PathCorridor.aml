@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="24e74166-c465-4e0b-87eb-818c4f7f3a32" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+	<introduction>
+	
+		<para>
+		The path corridor provides a way of moving along a navigation path without worrying about the minutiae of managing the path.
+		</para>
+		
+		<para>
+		Core Class: <token>PathCorridor</token>
+		</para>
+		
+		<para>
+		In the simplest scenario, a path is a list of waypoints from a starting point to an end point.  The waypoints form a connected 
+		set of line segments along which a navigation client moves.  But navigation is much more complex in the real world.  There are 
+		locomotion limitations, local steering restrictions, dynamic obstacle avoidance, and good old floating point errors.  All of these 
+		issues can make management of a path difficult.
+		</para>
+		
+		<para>
+		Navigation based on a polygon mesh provides a different abstraction than just a list of waypoints.  The path returned by the 
+		<token>NavmeshQuery</token> class is a list of polygons.  Technically, a client can move freely anywhere within this corridor of polygons.
+		If a client strays outside the corridor, then the corridor can be patched up using local searches rather than full path replanning.
+		</para>
+		
+		<para>
+		The path corridor is loaded with a path, a start point, and a target point.  It is then used to move the navigation client through
+		the corridor.  It handles path straightening, constraining the client to the navigation mesh, and adjusting the corridor due to
+		inaccurate client locomotion.
+		</para>
+		
+		<para>
+		The <token>PathCorridor</token> API is well documented.  The only thing worth repeating here is a warning:  You can't just initialize a
+		corridor with a path and forget long distance path planning.  Since the path corridor class uses local searches to maintain the corridor,
+		attempting to apply large delta movement to the corridor's position or target can result in a malformed corridor.  Details are in the API 
+		documentation.
+		</para>
+	 
+	</introduction>
+
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nav.NavmeshQuery</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.PathCorridor</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.PathCorridorData</codeEntityReference>
+	
+		<link xlink:href="1b3cfec9-7cd3-444c-b83d-dfc551454822"/> <!-- Nav Intro -->
+		<link xlink:href="6cf1c77d-725a-4f3e-bcbf-62e7fc5e2bc6"/> <!-- Navmesh -->
+		<link xlink:href="40b9b3c3-f08f-4fcf-b85f-37efea236d43"/> <!-- NavmeshQuery -->
+		<link xlink:href="2b87d0be-b6ae-409d-97eb-2a3b37c508ad"/> <!-- CrowdManager -->
+	
+	</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

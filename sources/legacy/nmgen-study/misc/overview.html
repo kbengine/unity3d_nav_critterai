@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CritterAI NMGen</title>
+</head>
+
+<body>
+
+<p>NMGen is adaptation of <a href="http://code.google.com/p/recastnavigation/" target="_blank">Recast's</a> static mesh functionality in the Java language for purposes of study  and experimentation. It takes an arbitrary triangle mesh as input  and outputs meshes representing the traversable  surface of the original mesh.</p>
+<p><a href="http://www.critterai.org/nmgen" target="_parent">Project Documentation<br />
+</a><a href="http://code.google.com/p/critterai/" target="_parent">Project Source</a><br />
+<a href="http://www.critterai.org/nmgen_codelicense" target="_parent">License</a></p>
+<p>
+<img src="http://www.critterai.org/sites/default/files/nmgen/stage_detail_mesh.jpg"/></p>
+<p><strong>Navigation Mesh Generation Process</strong></p>
+
+<p>This process is an adaptation of portions of 
+<a href="http://code.google.com/p/recastnavigation/" target="_blank">Recast</a>, a C++ navigation mesh generator
+created and released by Mikko Mononen under the 
+<a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT license</a>.</p>
+
+<p>
+	The general process is as follows:</p>
+<ol>
+	<li>
+		<a href="http://www.cs.sunysb.edu/~vislab/projects/volume/Papers/Voxel/index.html" target="_blank">Voxelization</a> - Create a solid <a href="http://www.critterai.org/nmgen_hfintro" target="_parent">heightfield</a> from the source geometry.</li>
+	<li>
+		Generate Regions - Detect the top surface area of the solid heightfield and divide it up into contiguous regions.</li>
+	<li>
+		Generate Contours - Detect the contours of the regions and form them into <a href="http://en.wikipedia.org/wiki/Polygon#Convexity" target="_blank">simple polygons</a>.</li>
+	<li>
+		Generate Polygon Mesh - Divide the contours into convex polygons.</li>
+	<li>Generate  Detailed Mesh - <a href="http://mathworld.wolfram.com/Triangulation.html" target="_blank">Triangulate</a> the polygon mesh and add height detail.</li>
+</ol>
+  
+<p>See <a href="http://www.critterai.org/nmgen_overview" target="_parent">The High Level Process</a>
+for more information.</p>
+  
+<p>The class which implements this process is {@link org.critterai.nmgen.NavmeshGenerator}.</p>
+  
+<p>Each stage of the process is implemented by  data and builder classes. The output of one stage is required 
+as input for the next:</p>
+
+ <table border="1" cellpadding="5">
+     <tr>
+         <td width="337"><strong>Stage</strong></td>
+         <td width="109"><strong>Builder Class</strong></td>
+         <td width="95"><strong>Data Class (output)</strong></td>
+         <td width="109"><strong>Builder Input</strong></td>
+     </tr>
+     <tr>
+         <td>Voxelization</td>
+         <td>{@link org.critterai.nmgen.SolidHeightfieldBuilder}</td>
+         <td>{@link org.critterai.nmgen.SolidHeightfield}</td>
+         <td>Source Geometry</td>
+     </tr>
+     <tr>
+         <td>Region Generation</td>
+         <td>{@link org.critterai.nmgen.OpenHeightfieldBuilder}</td>
+         <td>{@link org.critterai.nmgen.OpenHeightfield}</td>
+         <td>{@link org.critterai.nmgen.SolidHeightfield}</td>
+     </tr>
+     <tr>
+         <td>Contour Generation</td>
+         <td>{@link org.critterai.nmgen.ContourSetBuilder}</td>
+         <td>{@link org.critterai.nmgen.ContourSet}</td>
+         <td>{@link org.critterai.nmgen.OpenHeightfield} (Fully built.)</td>
+     </tr>
+     <tr>
+         <td>Polygon Mesh Generation</td>
+         <td>{@link org.critterai.nmgen.PolyMeshField}</td>
+         <td>{@link org.critterai.nmgen.PolyMeshField}</td>
+         <td>{@link org.critterai.nmgen.ContourSet}</td>
+     </tr>
+     <tr>
+         <td>Detail  Mesh Generation</td>
+         <td>{@link org.critterai.nmgen.DetailMeshBuilder}</td>
+         <td>{@link org.critterai.nmgen.TriangleMesh}</td>
+         <td>{@link org.critterai.nmgen.PolyMeshField}</td>
+     </tr>
+ </table>
+
+</body>
+</html>

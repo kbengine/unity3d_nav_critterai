@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c7241703-3cf0-49c9-ad94-4b00d6c75741" revisionNumber="1">
+	<developerConceptualDocument 
+		xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" 
+		xmlns:xlink="http://www.w3.org/1999/xlink">
+
+		<introduction>
+		
+			<para>
+			<application>CAINav</application> is a navigation system for use with .NET and <token>UnityPro</token> on Windows. 
+			It provides navigation mesh generation, pathfinding, and local steering functionality.
+			</para>
+			
+			<para>
+			At the core of <application>CAINav</application> is the well regarded <token>RecastNavigation</token> by 
+			<token>Mikko</token>. This library is mostly about adapting Recast Navigation for use with .NET and Unity. 
+			So most of the core features are courtesy of Mikko's work.
+			</para>
+		
+			<para></para>
+			<alert class="warning">
+				
+				<para>This is an alpha release meant for use by early adopters.</para>
+				
+				<para>
+				Not all features have undergone rigorous testing. Some features have little documentation. 
+				Expect frequent changes to the API and potentially breaking changed to Unity components. 
+				E.g. Unity components may need to be deleted and re-created when migrating to a new release.
+				</para>
+				
+				<para>Feedback provided through the <token>DiscussionGroup</token> will be much appreciated.</para>
+				
+			</alert>
+		
+		<para>
+		<token>CAINavDownload</token> (Zip)
+		</para>
+		
+		</introduction>
+		
+		<section address="NMGen">
+	
+			<title>Navigation Mesh Generation</title>
+		
+			<content>
+			
+				<list class="bullet">
+					<listItem>
+					Generates polygon meshes representing the traversable surface of arbitrary source geometry.
+					</listItem>
+					<listItem>
+					Core features are independent of the pathfinding and steering components, providing more options for work flow and distribution.
+					</listItem>
+					<listItem>
+					A highly extendable build process suitable for creating complex navigation meshes at design time.
+					</listItem>
+					<listItem>
+					Unity extensions that provide designer (non-coder) friendly build processes.
+					</listItem>
+				</list>
+		
+			</content>
+		
+		</section>
+	
+		<section address="NMQuery">
+	
+			<title>Pathfinding</title>
+		
+			<content>
+			
+				<list class="bullet">
+					<listItem>A* and Dijsktra searches.</listItem>
+					<listItem>Various local environment queries for fast, no search movement.</listItem>
+					<listItem>Easy management of path corridors.</listItem>
+					<listItem>
+					Custom connections between different areas of the mesh for non-standard movement. 
+					(Off-mesh connections.)
+					</listItem>
+					<listItem>The ability to enable/disable polygons on a per agent basis. (Polygon filtering.)</listItem>
+					<listItem>The ability to define polygon traversal costs on a per agent basis.</listItem>
+					<listItem>Tiling of meshes to efficiently deal with large areas.</listItem>
+				</list>
+				
+			</content>
+		
+		</section>
+	
+		<section address="CrowdManager">
+	
+			<title>Local Steering</title>
+		
+			<content>
+			
+				<list class="bullet">
+					<listItem>Local steering/collision avoidance for up to 20 agents.</listItem>
+					<listItem>Independent agents that respond to the presence of other agents.</listItem>
+					<listItem>Following behavior and moving as a group.</listItem>
+				</list>
+				
+			</content>
+		
+		</section>
+	
+		<section address="Miscellany">
+	
+			<title>Miscellany</title>
+		
+			<content>
+			
+				<list class="bullet">
+					<listItem>Core features available for use with Unity Pro and .NET-only implemenations.</listItem>
+					<listItem>Many ease-of-use extensions for Unity.</listItem>
+					<listItem>
+					Unity <externalLink><linkText>plug-in deployment restrictions</linkText>
+					<linkUri>http://unity3d.com/support/documentation/Manual/Plugins.html</linkUri></externalLink>
+					apply. E.g. Can't be deployed to the Unity web player.
+					</listItem>
+					<listItem><application>CAINav</application> is not officially supported for use in the Unity Editor on the Mac OS, 
+					or at runtime on any platform other than Windows. This is not a technical limitation, but is 
+					due to the lack of non-Windows systems for builds and testing.
+					</listItem>
+					<listItem>
+					Does not support temporary obstacles.
+					</listItem>
+				</list>
+				
+			</content>
+		
+		</section>
+	
+		<section address="featureExplorer">
+	
+			<title>Sample Pack</title>
+		
+			<content>
+		
+				<para>
+				The <application>Sample Pack</application> contains demos that will let you play around with various 
+				the navigation features. Simply extract the contents and run the demos. They provides a lot of nice visualizations.
+				</para>
+				
+				<para></para>
+				<alert class="note">
+				<para>
+				Kaspersky Internet Security may report a <externalLink><linkText>PDM.Keylogger security warning</linkText>
+				<linkUri>http://forum.unity3d.com/threads/36180-PDM.Keylogger-problem</linkUri></externalLink>
+				when <application>Feature Explorer</application> is run. Kaspersky must not like the way 
+				Unity detects keyboard input, because I certainly haven't included any viruses. Honest...really...
+				</para>
+		
+				<para>
+				The <application>Sample Pack</application> pre-compiled demos have been tested on 64-bit Windows 7 and 32-bit 
+				Windows Vista.
+				</para>		
+		
+		</alert>
+		
+		<para/>
+		<token>CAINavExplorerDownload</token> (Download/Zip)
+		<para/>
+			</content>
+		
+		</section>
+	
+	</developerConceptualDocument>
+</topic>

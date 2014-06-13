@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1b3cfec9-7cd3-444c-b83d-dfc551454822" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+	  <introduction>
+
+			<para>
+			The navigation side of <application>CAINav</application> consists of features
+			used to create and use navigation meshes for pathfinding and local steering.</para>
+			
+			<para>Core: <codeEntityReference>N:org.critterai.nav</codeEntityReference></para>
+			
+			<para>
+			Unity extensions: 
+			<codeEntityReference>N:org.critterai.nav.u3d</codeEntityReference>
+			</para>
+			 
+			<para>There are five main classes you'll be dealing with:</para>
+			
+			<para></para>
+			<alert class="note">
+			  <para>
+			  CAINav uses the OpenGL coordinate system.
+			  </para>
+			</alert>
+			
+			<para>
+			The <token>Navmesh</token> class defines the structure and state of the navigation mesh.  The only user component that deals directly with this class
+			on a regular basis is the component responsible for creating the mesh and managing its state.  Normal navigation clients, the one's needing to perform pathfinding
+			and such, rarely if ever interact directly with the navigation mesh.
+			</para>
+			
+			<para>
+			The most important class to understand and become comfortable with is the <token>NavmeshQuery</token> class. It provides almost all of the
+			client navigation features, including A* and Dijkstra path searches, string pulling, point and polygon searches, raycasting, etc.
+			</para>
+			
+			<para>
+			The <token>NavmeshQueryFilter</token> is a seemingly minor class, but it has a large impact on navigation.  Filters are used to define the costs of
+			traversing the mesh and flags that control which parts of the navigation mesh are included in operations.  Multiple filters can be used to customize the 
+			navigation behavior on a per client basis.
+			</para>
+			
+			<para>
+			The <token>PathCorridor</token> class provides a way of moving along a navigation path without worrying about the minutiae of managing the
+			path.
+			</para>
+			
+			<para>
+			The <token>CrowdManager</token> is the big beast of the navigation classes.  It not only handles a lot of the path management for you, but also
+			local steering and dynamic avoidance between navigation clients. I.e. It can keep your agents from running into each other.
+			</para>
+			
+	  </introduction>
+	
+		<relatedTopics>
+		
+			<codeEntityReference>T:org.critterai.nav.Navmesh</codeEntityReference>
+			<codeEntityReference>T:org.critterai.nav.NavmeshQuery</codeEntityReference>
+			<codeEntityReference>T:org.critterai.nav.NavmeshQueryFilter</codeEntityReference>
+			<codeEntityReference>T:org.critterai.nav.PathCorridor</codeEntityReference>
+			<codeEntityReference>T:org.critterai.nav.CrowdManager</codeEntityReference>
+		
+			<link xlink:href="6cf1c77d-725a-4f3e-bcbf-62e7fc5e2bc6"/> <!-- Navmesh -->
+			<link xlink:href="40b9b3c3-f08f-4fcf-b85f-37efea236d43"/> <!-- NavmeshQuery -->
+			<link xlink:href="24e74166-c465-4e0b-87eb-818c4f7f3a32"/> <!-- PathCorridor -->
+			<link xlink:href="2b87d0be-b6ae-409d-97eb-2a3b37c508ad"/> <!-- CrowdManager -->
+		
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

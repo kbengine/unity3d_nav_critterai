@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+
+      <para>
+			The purpose of NMGen is to generate navigation meshes from arbitrary source geometry. Features fall into two categories:
+			Core and 'standard build'.
+			</para>
+			
+			<para>
+			The core features are located in the <codeEntityReference>N:org.critterai.nmgen</codeEntityReference> namespace and involve creating
+			simplified polygon mesh data from detailed triangle-based source geometry.  You can code your own build process from scratch using these features, but it will 
+			require a significant amount of work and detailed knowlege of all aspects of the process.
+			</para>
+			
+			<para>
+			The standard build process implements a flexible, extendable build process suitable for use at design time.  It takes care of many of the mundane 
+			details for you.  Its features are implemented in the following namespaces:
+			</para>
+      
+			<para>Common extentions: <codeEntityReference>N:org.critterai.nmbuild</codeEntityReference></para>
+			
+      <para>Unity extensions: <codeEntityReference>N:org.critterai.nmbuild.u3d.editor</codeEntityReference></para>
+			
+			<para>The standard build process has three main steps which will be covered in detail throughout the rest of this section.</para>
+			
+			<list class="ordered">
+      
+        <listItem>Compile the input.</listItem>
+				<listItem>The NMGen Build. (Produces the polygon meshes.)</listItem>
+				<listItem>Create the navigation mesh.</listItem>
+				
+			</list>
+			
+			<para></para>
+			<alert class="note">
+			  <para>
+			  CAINav uses the OpenGL coordinate system.
+			  </para>
+			</alert>
+     
+    </introduction>
+    
+    <section address="highlevel">
+    
+      <title>The Standard Build Process</title>
+      
+      <content>
+      
+        <mediaLink><image xlink:href="NavmeshBuild-Standard"/></mediaLink>
+				
+      </content>
+      
+    </section>
+
+	<relatedTopics>
+	
+		<link xlink:href="3D048EB4-7BD1-407a-9442-9DE60C82266E"/> <!-- Compiling Input -->
+		<link xlink:href="FCD34CAE-02FA-48fd-891E-FB82EE360F49"/> <!-- Incremental Builder -->	
+		<link xlink:href="ad1c623a-56b7-4aa6-921e-f2d67b39622a"/> <!-- Creating Navmesh -->	
+		<link xlink:href="e76dda55-5f91-4c2a-bf8d-fa34de59e82b"/> <!-- Multi-Tile -->	
+		<link xlink:href="6fb3041b-e9be-4f03-868b-dcac944df19b"/> <!-- Advanced: Heightfield Intro -->
+		<link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> <!-- Advanced: Core Build Process -->
+	
+	</relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e81146c4-0143-4cde-ad55-fe1fd1049cbc" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+    <introduction>
+
+      <para>
+			<application>CAINav</application> provides various extensions that make life easier in Unity. This section covers topcis 
+			that will help you get going.
+			</para>
+      
+      <para>
+			The NMGen extensions provide designer friendly features that can be used by non-coders to create complex navigation meshes.
+			There are various extension points that allow coders to easily extend the build process even further.
+			</para>
+      
+    </introduction>
+
+    <section address="upAndRunning">
+    
+      <title>Getting CAINav Up and Running</title>
+      
+      <content>
+        
+        <para>
+				To get started you first need to get the <application>CAINav</application> package into your project:
+				</para>
+        
+				<list class="ordered">
+			
+					<listItem>
+						<externalLink>
+						<linkText>Download</linkText>
+						<linkUri>http://code.google.com/p/critterai/downloads/list</linkUri>
+						<linkTarget>_blank</linkTarget>
+						</externalLink> and extract the contents of the CAINav distribution.
+					</listItem>
+					
+					<listItem>
+					Locate the Unity Pro package: cai-nav-pro-x.x.x.unitypackage. (Where x.x.x is the version number.)
+					</listItem>
+				
+					<listItem>
+					Import the package into your project. (<ui>Assets->Import Package...</ui> from the menu bar.)
+					</listItem>
+			
+				</list>
+        
+        <para>The package will add the following files to your project:</para>
+        
+				<list class="bullet">
+				
+					<listItem>The core plug-in libraries to the project's <codeInline>plugin</codeInline> 
+					folder.</listItem>
+					
+					<listItem>The core libraries to the <codeInline>CAI</codeInline> folder. These give you script level
+					access to the core <application>CAINav</application> features.</listItem>
+					
+					<listItem>The Unity extension libraries to the <codeInline>CAI</codeInline> and 
+					<codeInline>CAI/Editor</codeInline> folders. These provide all the Unity extensions.</listItem>
+					
+				</list>
+
+        <para>
+				The package also adds a <ui>CritterAI</ui> menu from which many of the features can be accessed. 
+				</para>
+        
+      </content>
+    
+    </section>
+		
+	<relatedTopics>
+	
+		<link xlink:href="61341701-6cb3-408b-9b1e-d60e3fb817e1"/> <!-- Building Navmeshes -->
+	
+	</relatedTopics>
+    
+  </developerConceptualDocument>
+</topic>

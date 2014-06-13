@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="c7241703-3cf0-49c9-ad94-4b00d6c75741" visible="True" isDefault="true" title="CAINav" />
+  <Topic id="8a99e478-a235-49ef-986d-db53a0bc50bb" visible="True" title="Structural Overview" />
+  <Topic id="1f93f37b-f8ae-4a7e-8698-c2fa7fb93814" visible="True" noFile="true" title="Getting Started Topics">
+    <Topic id="1b3cfec9-7cd3-444c-b83d-dfc551454822" visible="True" title="An Introduction to Navigation" tocTitle="An Introduction to Navigation" linkText="An Introduction to Navigation">
+      <Topic id="6cf1c77d-725a-4f3e-bcbf-62e7fc5e2bc6" visible="True" title="The Navigation Mesh" tocTitle="The Navigation Mesh" linkText="The Navigation Mesh" />
+      <Topic id="40b9b3c3-f08f-4fcf-b85f-37efea236d43" visible="True" title="The Navigation Mesh Query" tocTitle="The Navigation Query" linkText="The Navigation Mesh Query" />
+      <Topic id="24e74166-c465-4e0b-87eb-818c4f7f3a32" visible="True" title="The Path Corridor" tocTitle="The Path Corridor" linkText="The Path Corridor" />
+      <Topic id="2b87d0be-b6ae-409d-97eb-2a3b37c508ad" visible="True" title="The Crowd Manager" />
+    </Topic>
+    <Topic id="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7" visible="True" title="An Introduction to NMGen" tocTitle="An Introduction to NMGen" linkText="An Introduction to NMGen">
+      <Topic id="3D048EB4-7BD1-407a-9442-9DE60C82266E" visible="True" title="Compiling the Input" />
+      <Topic id="FCD34CAE-02FA-48fd-891E-FB82EE360F49" visible="True" title="The Incremental Builder" />
+      <Topic id="ad1c623a-56b7-4aa6-921e-f2d67b39622a" visible="True" title="Creating the Navigation Mesh" />
+      <Topic id="e76dda55-5f91-4c2a-bf8d-fa34de59e82b" visible="True" title="Building Multi-Tile Meshes" tocTitle="Multi-Tile Meshes" linkText="Building Multi-Tile Meshes" />
+    </Topic>
+    <Topic id="e81146c4-0143-4cde-ad55-fe1fd1049cbc" visible="True" title="Getting Started with Unity">
+      <Topic id="61341701-6cb3-408b-9b1e-d60e3fb817e1" visible="True" title="Building Navigation Meshes">
+        <Topic id="fb2ca7fa-3b03-41c6-88d8-731c44fb7879" visible="True" title="The Input Build" />
+        <Topic id="80abba67-1b0e-4ada-9be1-e12b386978d3" visible="True" title="Build Configuration" />
+        <Topic id="b2097a0c-c41b-4d23-8861-2faccfc574f1" visible="True" title="The Advanced Build Type" />
+      </Topic>
+    </Topic>
+  </Topic>
+  <Topic id="90df5fd6-be7d-4891-a6d1-336e9ba98131" visible="True" noFile="true" title="Advanced Topics">
+    <Topic id="14ad693c-4460-48b3-9c75-a08ccff46a4d" visible="True" noFile="true" title="Advanced NMGen" tocTitle="Advanced NNGen" linkText="Advanced NMGen">
+      <Topic id="6fb3041b-e9be-4f03-868b-dcac944df19b" visible="True" title="Introduction to Heightfields" />
+      <Topic id="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af" visible="True" title="The Core Build Process" />
+      <Topic id="21046960-3dc1-4369-a092-5f5bba4f752c" visible="True" title="Areas and the Build" />
+    </Topic>
+    <Topic id="bb02b5c5-1ea9-4ae4-bc1f-ff0e446fb703" visible="True" title="CAINav on Non-Windows Platforms" tocTitle="Tips for Non-Windows Platforms" linkText="CAINav on Non-Windows Platforms" />
+    <Topic id="3bea0158-1703-414c-bf1f-a47e47b12f48" visible="True" title=".NET: Swapping in Native Vectors" />
+  </Topic>
+</Topics>

@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="61341701-6cb3-408b-9b1e-d60e3fb817e1" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+			
+      <para>
+			The NMGen ease-of-use extensions for <token>Unity</token> provide GUI-level access to almost all of the NMGen features. You can build navigation meshes
+			with a single click.  Or you can build, tweek, and rebuild selected zones of navigations meshes using advanced GUI features.
+			</para>
+			
+			<para>
+			All NMGen assets and support code are 'editor only'.  So they have zero impact on scene size and are not included in the Unity project build.  
+			(No data or code bloat.)  The only impact on the scene will be if you need to create custom scene for things like off-mesh connections 
+			and area markers.
+			</para>
+
+			<para>
+			The Unity NMGen build process is pretty much the same as the standard build process describe by 
+			<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/>. <!-- NMGenIntro -->  
+			The Unity extensions take care of gathering scene components and compiling them into input data, and provide ways to adjust the build via GUI 
+			editors rather than requiring you to code things.
+			</para>
+
+    </introduction>
+		
+		<section>
+		
+			<title>The Main NMGen Build Assets</title>
+			
+			<content>
+			
+				<para>
+				As noted above, the NMGen build process and all associated assets are implemented as project assets, not scene components.  The only time you will need 
+				NMGen specific components in a scene is if you need to manually annotate something special that you want to include in the build. 
+				(E.g. Off-mesh connections.) The below diagram shows the main assets and how they are related from an input/output perspective.
+				</para>
+			
+				<mediaLink>
+          <image xlink:href="UnityNMGenMainAssets"/>
+        </mediaLink>
+			
+				<para>
+				The central asset is the <codeEntityReference>T:NavmeshBuild</codeEntityReference> asset.  It defines the build configuration and holds all intermediate 
+				build data created during the build.
+				</para>
+				
+				<para>
+				The build uses a scene query asset to determine which scene components will be included in the build.  Any ScritableObject that
+				implements the <codeEntityReference>T:org.critterai.nmbuild.u3d.editor.ISceneQuery</codeEntityReference> interface can be used.  For example, 
+				if you want the build to gather scene components based on tags, then you'll use the <codeEntityReference>T:TagSceneQuery</codeEntityReference> asset.
+				</para>
+				
+				<para>
+				Input processors do the heavy lifting such as triangulating MeshFilter and Terrain components, adding <token>INMGenProcessor</token> objects to the build, etc.  
+				Any ScriptableObject that implements the <codeEntityReference>T:org.critterai.nmbuild.u3d.editor.IInputBuildProcessor</codeEntityReference> interface can be used.
+				</para>
+				
+				<para>
+				The bake target is the asset that will get the result of the build.  (The navigation mesh.)  Any ScritableObject that
+				implements the <codeEntityReference>T:org.critterai.nav.u3d.INavmeshData</codeEntityReference> interface can be used.  The normal
+				target will be a <codeEntityReference>T:CAIBakedNavmesh</codeEntityReference> asset.  Note that this is a navigation asset, not an NMGen asset,
+				so it can be distributed as part of the project compile and be referenced by scene components.
+				</para>
+			
+			</content>
+		
+		</section>
+		
+		<section>
+		
+			<title>The NavmeshBuild Asset</title>
+			
+			<content>
+			
+				<para>
+				At the core of the Unity NMGen build process is the <codeEntityReference>T:NavmeshBuild</codeEntityReference> asset.  It is created using one of the 
+				<ui>CritterAI->Create NMGenAsset->Navmesh Build</ui> menu items, usually the <ui>Standard</ui> option.  Once added to the project you'll be presented with
+				the following inspector.
+				</para>
+			
+				<mediaLink>
+          <image xlink:href="NavmeshBuildInspector"/>
+        </mediaLink>
+				
+				<para>
+				The upper section of the inspector contains the primary build controls and build target assignment.  Since it is possible to reassign the target
+				you can use a single configuration to build any number of navigation meshes.  Just reassign the target, open the target's input scene, and build.
+				</para>
+				
+				<para>
+				The center section contains the NMGen configuration.  It is defaults to values suitable for generic human-sized agents.
+				</para>
+				
+				<para>
+				The lower section contains the input configuration.  The scene query is optional.  If none is provided then the search will be global.  E.g.
+				All MeshFilters in the scene.  There has to be at least one input processor for the build to produce anything.
+				</para>
+				
+			</content>
+		
+		</section>
+ 
+	<relatedTopics>
+	
+		<link xlink:href="fb2ca7fa-3b03-41c6-88d8-731c44fb7879"/> <!-- Input Build -->
+		<link xlink:href="80abba67-1b0e-4ada-9be1-e12b386978d3"/> <!-- NavmeshBuild Config -->
+		<link xlink:href="b2097a0c-c41b-4d23-8861-2faccfc574f1"/> <!-- Advanced Build -->
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- Intro to NMGen -->
+	
+	</relatedTopics>
+ 
+  </developerConceptualDocument>
+</topic>

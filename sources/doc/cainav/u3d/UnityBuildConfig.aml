@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="80abba67-1b0e-4ada-9be1-e12b386978d3" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+	
+    <introduction>
+		
+      <para>
+			This topic covers some of the <token>Unity</token> specfic configuration settings found in the 
+			<codeEntityReference>T:NavmeshBuild</codeEntityReference> asset.
+			</para>
+			
+			<para></para>
+			<alert class='note'>
+			
+				<para>
+				See the <token>NMGenParams</token> documentation for information on the standard configuration settings.
+				</para>
+			
+			</alert>
+			
+    </introduction>
+		
+		<section>
+		
+			<title>Controls and Target Assignment</title>
+			
+			<content>
+			
+				<para>
+				The upper portion of the inspector contains the main build controls and build target.
+				</para>
+				
+				<mediaLink>
+          <image xlink:href="NavmeshBuildUpper"/>
+        </mediaLink>
+				
+				<para>
+				The bake target is the asset that will get the result of the build.  (The navigation mesh.)  Any ScritableObject that
+				implements the <codeEntityReference>T:org.critterai.nav.u3d.INavmeshData</codeEntityReference> interface can be used.  The normal
+				target will be a <codeEntityReference>T:CAIBakedNavmesh</codeEntityReference> asset.  Note that this is a navigation asset, not an NMGen asset,
+				so it can be distributed as part of the project compile and be referenced by scene components.
+				</para>
+				
+				<para>
+				There are two types of builds.  A standard build is performed directly from the inspector and will run a foreground build of the entire
+				navigation mesh.  (Can't do anything else in the Unity editor until the build is complete.)  The advanced build provides extra debug options,
+				background build capabilities, and the ability to partially rebuild multi-tile navigation meshes.  The advanced build uses a special
+				editor window for the build.
+				</para>
+				
+				<para>
+				The <ui>Log Mesh State</ui> button will log the current state of the build target to the console.  (Polygon count, bounds, etc.)
+				</para>
+				
+				<para>
+				The <ui>Build &amp; Bake</ui> button will run a full build and bake of the navigation mesh in the foreground using the current scene as the input source.
+				(There will be a warning at the top of the inspector if the current scene is not the same as the last input scene.)
+				</para>
+				
+				<para>
+				If <ui>Trace</ui> is enabled, then detailed trace messages will be sent to the console.  This is useful for debugging the build.
+				</para>
+			
+			</content>
+		
+		</section>
+		
+		<section>
+		
+			<title>NMGen Configuration</title>
+			
+			<content>
+			
+				<para></para>
+				<alert class='note'>
+				
+					<para>
+					This section will not be avaiable if the build type is set to advanced.
+					</para>
+				
+				</alert>
+				
+				<para>
+				The configuration section contains the standard NMGen confiugration settings plus a some Unity specific options.
+				</para>
+				
+				<mediaLink>
+          <image xlink:href="NavmeshBuildConfig"/>
+        </mediaLink>
+				
+				<para>
+				The very first NMGen configuration settings you should take a look at are the <ui>Agent Settings</ui>.
+				Most other settings are derived, at least in part, from these.  Unlike the <token>NMGenParams</token> core class, these agent settings are in world
+				units, not cell units.  Set the values based on your agent maximums.  (Maximum height, maximum radius, etc.)
+				</para>
+				
+				<para>
+				The next settings you'll want to take a look at are the <ui>Resolution and Tile Settings</ui>.  You can derive these yourself with the help of
+				the <token>NMGenParams</token> documentation.  But if you've already set up the scene you can use the <ui>Derive</ui> button to get a good starting point.
+				The values will be derived based on a combination of the agent settings and bounds of the input geometry.
+				</para> 
+				
+				<para></para>
+				<alert class='note'>
+				
+					<para>
+					A Tile Size of zero results in a single tile mesh.
+					</para>
+				
+				</alert>
+				
+				<para>
+				There are various toggle options in the <ui>Advanced</ui> configuration section.  These will automatically add NMGen processors to the build as follows:
+				</para>
+				
+				<list class="bullet">
+					<listItem>Ledges Not Walkable -> <codeEntityReference>T:org.critterai.nmbuild.FilterLedgeSpans</codeEntityReference></listItem>
+					<listItem>Low Height Not Walkable -> <codeEntityReference>T:org.critterai.nmbuild.FilterLowHeightSpans</codeEntityReference></listItem>
+					<listItem>Low Obstacles Walkable -> <codeEntityReference>T:org.critterai.nmbuild.LowObstaclesWalkable</codeEntityReference></listItem>
+					<listItem>Apply Poly Flag -> <codeEntityReference>T:org.critterai.nmbuild.ApplyPolygonFlags</codeEntityReference> (Flag: 0x01)</listItem>
+				</list>
+	
+				<para>
+				If you don't need a lot of height detail in your navigation mesh you can uncheck the <ui>Include Detail Mesh</ui> option.  This will
+				make the final navigation mesh more memory efficient.
+				</para>
+				
+				<para>
+				The <ui>Clean</ui> button can be used to round values to more reasonable values.  (E.g. 0.2929384839 to 0.29)
+				</para>
+				
+				<para>
+				The <ui>Reset</ui> button will reset the NMGen configuration to its original default values.
+				</para>
+			
+			</content>
+		
+		</section>
+		
+		<section>
+		
+			<title>Input Configuration</title>
+			
+			<content>
+			
+				<para>
+				The input configuration contains the scene query and processor asset assignments.
+				</para>
+			
+				<mediaLink>
+          <image xlink:href="NavmeshBuildInput"/>
+        </mediaLink>
+			
+				<para>
+				The assets assigned in this section can be created using menu items founds under <ui>CritterAI -> Create NMGen Assets</ui>.  Note that some
+				assets are effectively singletons with no configuration.  In such cases there is no need to create more than one per project; and the inspector won't let
+				you add them twice to the same build.
+				</para>
+				
+				<para>
+				It is perfectly fine to share scene query and input processors between multiple <codeEntityReference>T:NavmeshBuild</codeEntityReference> assets.
+				</para>
+			
+				<para>
+				The most common scene query is <codeEntityReference>T:TagSceneQuery</codeEntityReference>.  The scene query is optional.  If none is provided then 
+				the search will be global.  E.g. All MeshFilters in the scene, all terrains in the scene, etc.
+				</para>
+			
+			  <para>
+				There must be at least one input processor for the build.  For simple builds this is usually a compiler.  The most commonly used compiler is
+				<codeEntityReference>T:MeshCompiler</codeEntityReference>.  You can add as many processors as you wish.  The processors will be run in
+				ascending priority.  This is especially useful for area assignment since it allows higher priority areas to overwrite lower priority areas.
+				</para>
+				
+				<para>
+				The inspector won't let you add the the same input processor asset to a build twice.
+				</para>
+			
+				<para>
+				The <ui>Auto-Clean</ui> option is used to automatically clean up invalid triangles in the input geometry.  Sometimes modeling programs can let invalid triangles slip in;
+				triangles that are no problem for the renderer but cause problems for NMGen.  For example, triangles that contain the same vertex twice will be removed.
+				</para>
+			
+			</content>
+		
+		</section>
+
+	<relatedTopics>
+	
+		<link xlink:href="61341701-6cb3-408b-9b1e-d60e3fb817e1"/> <!-- Building Navmeshes -->
+		<link xlink:href="fb2ca7fa-3b03-41c6-88d8-731c44fb7879"/> <!-- Input Build -->
+		<link xlink:href="b2097a0c-c41b-4d23-8861-2faccfc574f1"/> <!-- Advanced Build -->
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- Intro to NMGen -->
+	
+	</relatedTopics>
+	
+  </developerConceptualDocument>
+</topic>

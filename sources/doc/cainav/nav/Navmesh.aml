@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="6cf1c77d-725a-4f3e-bcbf-62e7fc5e2bc6" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+	<introduction>
+		
+		<para>
+		The navigation mesh is the primary data model for the navigation system.  The only user 
+		component that deals directly with the mesh on a regular basis is the component that is 
+		responsible for creating the mesh and managing its state.  Normal navigation clients, 
+	  the one's needing to perform  pathfinding and such, rarely if ever interact directly with the 
+		navigation mesh.
+		</para>
+	  
+	  <para>Core Class: <token>Navmesh</token></para>
+	 
+	</introduction>
+	  
+	<section address="navmeshstructure">
+	
+	  <title>The Data Model</title>
+	  
+	  <content>
+	
+		<section address="tiles">
+		
+		  <title>Tiles</title>
+		  
+		  <content>
+		  
+				<para>
+				At the core of the navigation mesh is the tile. Tiles hold the vast majority of structural
+				and state information.  In fact, the <token>Navmesh</token> class is little more than a tile manager.
+				It may consist of a single tile, or many tiles laid out in a grid that can be swapped in and out
+				at runtime.
+				</para>
+				
+				<para>
+				The tile based structure of the navigation mesh adds a lot of flexibility.  As mentioned,
+				tiles can be swapped in and out at runtime.  This means that the mesh can represent a large
+				area, but not all tiles have to be loaded and active, reducing the mesh's memory footprint.  This also allows 
+				for a situation where individual tiles can be rebuilt without the need to rebuild the entire mesh.
+				</para>
+		  
+		  </content>
+		  
+		</section>
+		
+		<section address="tilestruture">
+		
+		  <title>Structural Elements</title>
+		  
+		  <content>
+		  
+				<para>
+				The tile's structural data is what defines the navigation graph used for pathfinding.  It consists
+				of two types of elements: Polygons and off-mesh connections.
+				</para>
+					
+				<para>
+				The core of the structure is a mesh of convex polygons with between three and 
+				<codeEntityReference>F:org.critterai.nmgen.NMGen.MaxAllowedVertsPerPoly</codeEntityReference> vertices. This 
+				mesh is in the same format as NMGen's <token>PolyMesh</token> structure, and usually represents an abstraction
+				of a scene's static geometry.
+				</para>
+				
+				<para>
+				Off-mesh connections are optional.  They consist of two connected endpoints, at least one of which resides within a 
+				polygon in the polygon mesh.  Off-mesh connections are added to the navigation graph as a single edge and
+				represent special travel routes not defined by scene geometry.  Think: The route an agent travels if it jumps 
+				over a railing that normally blocks movement.
+				</para>
+		  
+		  </content>
+		
+		</section>
+		
+		<section address="tilestate">
+		
+		  <title>State Data</title>
+		  
+		  <content>
+		
+				<para>
+				Tiles also contain state data.  This data is associated with individual polygons and off-mesh connections.  State
+				data includes area and flags.
+				</para>
+				
+				<para>
+				Areas are used to associate traversal cost to structural elements.  This effects pathfinding.  For example,
+				the area representing swampland can have a higher cost than the area representing smooth surfaces such as meadowland.
+				</para>
+				
+				<para>
+				Flags can be used to control when a structural element is traversable.  For example, a
+				flag can be set on the polygon below a door to indicate that it is closed and locked.  Or a flag can indicate
+				that only agents of a particular type are allowed to traverse the element.
+				</para>
+				
+				<para>
+				It is important to note that areas and flags have no meaning within the navigation mesh
+				itself.  The interpretation of the values is dependant on the <token>NavmeshQueryFilter</token>
+				used by each navigation client.  For example: One filter may define a cost of 10 for area id 5, while another may define 
+				a cost of 2 for the same area. One flag may be set when a door is closed with one filter checking for the flag during 
+				pathfinding, while another filter, used by a ghost, ignores the flag completely.
+				</para>
+		
+		  </content>
+		
+		</section>
+		
+		<section address="structvsstate">
+		
+		  <title>Structure Versus State</title>
+		  
+		  <content>
+			
+				<para>Why is it important to know the difference between structural elements and state data?</para>
+				
+				<para>
+				The first reason is that it is possible to save and load state separately from structure.  One common use case is to 
+				have a serialized version of the full navigation mesh that represents its default state.  Then serialized versions of various
+				states, such as the last runtime state, are used to overwrite the default state as needed.
+				</para>
+		
+				<para>
+				The main limitation is that a state is only valid for a particular structure.  So you can't, for example, save the state, 
+				change the tile structure, then load the original state into the new structure.
+				</para>
+				
+				<para>The second reason for understanding the difference between structure and state has to to with tile and polygon references...</para>
+		
+		  </content>
+		
+		</section>
+		
+		<section address="referenceids">
+		
+		  <title>Tile and Polygon References</title>
+		  
+		  <content>
+
+				<para>
+				The last bit of information needed to understand the navigation mesh is the concept of tile and polygon references.  These
+				values are one of the few data types that are defined by the navigation mesh rather than the tiles within the mesh.  It is important to
+				understand what references are because they are used by various classes to automatically invalidate pathfinding data if the 
+				structure of a navigation mesh changes.
+				</para>
+				
+				<para>
+				Essentially, tile and polygon references are unsigned integer 'handles' to structural elements within a navigation mesh. Tile references
+				are rarely used by navigation clients, while polygon references are all over the place.  Polygon references are unique for the navigation mesh, 
+				so they are useful for easily identifying a polygon without needing to know which tile it belongs to. 
+				Despite the name, polygon references can refer to a either a polygon or an off-mesh connection.
+				</para>
+				
+				<para>
+				References can become invalid.  If they are used after they are invalidated, then methods will return a failure status.  
+				Polygon references are based on the tile reference.  So they will be invalidated whenever their associated tile reference is invalidated.
+				</para>
+				
+				<para>
+				Structural changes govern the life of a reference.  Changing the configuration of a navigation mesh or the internal structure of a tile 
+				will invalidate all associated references.
+				</para>
+				
+				<para>
+				References are preserved during tile state changes such as changes flags and areas.  They are also preserved during normal 
+				runtime loading and unloading of tiles, and during normal serialization/de-serialization of a navigation mesh.
+				</para>
+
+		  </content>
+		
+		</section>
+		
+	  </content>
+	  
+	</section>
+
+	<section address="creation">
+	
+		<title>Creating a Navigation Mesh</title>
+		
+		<content>
+
+			<para>
+			There are various pipelines for creating a navigation mesh.  If you are using <token>Unity</token>, the 
+			<link xlink:href="61341701-6cb3-408b-9b1e-d60e3fb817e1">Unity extensions</link> make it easier.  Otherwise, 
+			the basic steps are as follows:
+			</para>
+			
+			<para>
+			<b>Generate packed tile data:</b>
+			</para>
+			
+			<list class="ordered">
+				<listItem>Generate <token>PolyMesh</token> and <token>DetailMesh</token> data using NMGen.</listItem>
+				<listItem>Optionally create a <codeEntityReference>T:org.critterai.nmbuild.ConnectionSet</codeEntityReference>. (Off-mesh connections.)</listItem>
+				<listItem>Load the data into a <codeEntityReference>T:org.critterai.nav.NavmeshTileBuildData</codeEntityReference> object.</listItem>
+				<listItem>Create a <codeEntityReference>T:org.critterai.nav.NavmeshTileData</codeEntityReference> object from the build data.</listItem>
+			</list>
+			
+			<para>
+			The tile's structure and default state is now locked into a packed data format that is ready to be loaded into
+			a navigation mesh.
+			</para>
+			
+			<para></para>
+			<alert class="note">
+				<para>
+				Using the <codeEntityReference>T:org.critterai.nav.NavmeshTileBuildData</codeEntityReference> class
+				directly can be a bit daunting.  The 
+				<codeEntityReference>
+				M:org.critterai.nmbuild.NMBuild.GetBuildData(org.critterai.nmgen.BuildContext,System.Int32,System.Int32,org.critterai.nmgen.PolyMeshData,org.critterai.nmgen.PolyMeshDetailData,org.critterai.nmbuild.ConnectionSet,System.Boolean)
+				</codeEntityReference>
+				utility method provides a standard way of creating the build data.
+				</para>
+			</alert>
+			
+			<para><b>Create a navigation mesh:</b></para>
+			
+			<para>
+			Single tile navigation meshes are created using the the single step
+			<codeEntityReference>M:org.critterai.nav.Navmesh.Create(org.critterai.nav.NavmeshTileBuildData,org.critterai.nav.Navmesh@)
+			</codeEntityReference> method.
+			</para>
+			
+			<para>
+			Multi-tile navigation meshes are created then loaded using multiple methods.  Use the 
+			<codeEntityReference>M:org.critterai.nav.Navmesh.Create(org.critterai.nav.NavmeshParams,org.critterai.nav.Navmesh@)
+			</codeEntityReference> method to initialize an empty mesh. then add tile data using the
+			<codeEntityReference>M:org.critterai.nav.Navmesh.AddTile(org.critterai.nav.NavmeshTileData,System.UInt32,System.UInt32@)
+			</codeEntityReference> method.
+			</para>
+		
+		</content>
+	
+	</section>
+	
+		<section address="serialization">
+	
+		<title>Navigation Mesh Serialization</title>
+		
+		<content>
+		
+			<para>
+			The <token>Navmesh</token> class supports byte serialization using the 
+			<codeEntityReference>M:org.critterai.nav.Navmesh.GetSerializedMesh</codeEntityReference> 
+			method.  This saves the entire mesh.
+			</para>
+		
+			<para>
+			It is possible to serialize state separately from structure on a tile-by-tile basis.  Get the tile
+			from the mesh using the <codeEntityReference>M:org.critterai.nav.Navmesh.GetTile(System.Int32)</codeEntityReference> method, then use the
+			<codeEntityReference>M:org.critterai.nav.NavmeshTile.GetState(System.Byte[])</codeEntityReference> and
+			<codeEntityReference>M:org.critterai.nav.NavmeshTile.SetState(System.Byte[])</codeEntityReference> methods.
+			</para>
+		
+		</content>
+	
+	</section>
+	
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nav.Navmesh</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshQuery</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshTileBuildData</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshTileData</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshTile</codeEntityReference>
+	
+		<link xlink:href="1b3cfec9-7cd3-444c-b83d-dfc551454822"/> <!-- Nav Intro -->
+		<link xlink:href="40b9b3c3-f08f-4fcf-b85f-37efea236d43"/> <!-- NavmeshQuery -->
+		<link xlink:href="24e74166-c465-4e0b-87eb-818c4f7f3a32"/> <!-- PathCorridor -->
+		<link xlink:href="2b87d0be-b6ae-409d-97eb-2a3b37c508ad"/> <!-- CrowdManager -->
+	
+	</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

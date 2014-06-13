@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="fb2ca7fa-3b03-41c6-88d8-731c44fb7879" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+
+      <para>
+			The <token>Unity</token> NMGen build process is pretty much the same as the standard build process describe by 
+			<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/>. <!-- NMGenIntro -->  The main difference is in the input
+			compile process. 
+			</para>
+			
+			<para>
+			The input compile process is manged by an input builder that is modified by the scene query and input processors assigned to the 
+			<codeEntityReference>T:NavmeshBuild</codeEntityReference> asset.
+			</para>
+			
+    </introduction>
+		
+		<section>
+		
+			<title>The Input Compile Process</title>
+			
+			<content>
+			
+				<para>
+				The input compile process is managed by the input builder.  The the only thing the builder does is manage
+				the input processors.  At each step it makes sure all the necessary build assets are ready for use and calls the
+				processors in ascending priority.  A processor can be active during one step or multiple steps.  For example,
+				the <codeEntityReference>T:MeshCompiler</codeEntityReference> loads MeshFilter components from the scene during the 
+				load step, then triangulates them during the compile step.
+				</para>
+			
+				<mediaLink>
+          <image xlink:href="UnityInputBuildProcess"/>
+        </mediaLink>
+	
+				<section>
+				
+					<title>Load Components</title>
+					
+					<content>
+					
+						<para>
+						The scene query asset is used to determine which components in the scene will be included in the input compile.  Any ScritableObject that
+						implements the <codeEntityReference>T:org.critterai.nmbuild.u3d.editor.ISceneQuery</codeEntityReference> interface can be used.  For example, 
+						if you want the build to gather scene components based on tags, then you'll use the <codeEntityReference>T:TagSceneQuery</codeEntityReference> asset.
+						If no scene query is provided, then the the query will be global.  (E.g. All MeshFitlers in the scene, all Terrains in the scene, etc.)
+						</para>
+						
+						<para>
+						During the load component step, each input processor uses the scene query to load the components that it cares about.  For example,
+						the <codeEntityReference>T:MeshCompiler</codeEntityReference> will load all MeshFilters and the <codeEntityReference>T:TerrainCompiler</codeEntityReference> will
+						load the Terrain component.    
+						</para>
+		
+					</content>
+				
+				</section>
+				
+				<section>
+				
+					<title>Filter Components</title>
+					
+					<content>
+					
+						<para>
+						During the filter component step the input processors have a chance to remove components from the input compile.   The component loaders are generally dumb.
+						They load everything the scene query let's them load. In this step, other processors can refine the result.  For example, a 
+						<codeEntityReference>T:MeshInputFilter</codeEntityReference> can be used to remove MeshFilter's that reference all 'door' meshes.  Or the
+						<codeEntityReference>T:StaticFilter</codeEntityReference> can be used to remove all components not marked as static.
+						</para>
+		
+					</content>
+				
+				</section>
+				
+				<section>
+				
+					<title>Apply Area Modifiers</title>
+					
+					<content>
+					
+						<para>
+						At this point all components that will be compiled have been gathered.  During this step input processors can assign custom areas to each 
+						component.  The assignments will be used during the compile step.  For example, the <codeEntityReference>T:MeshAreaDef</codeEntityReference> 
+						can assign the area 21 to all MeshFilters that reference swamp and marsh meshes.  During the compile step the 
+						<codeEntityReference>T:MeshCompiler</codeEntityReference> will then assign 21 to all triangles generated from the meshes.
+						</para>
+						
+						<para></para>
+						<alert class="note">
+						
+							<para>
+							<codeEntityReference>F:org.critterai.nmgen.NMGen.MaxArea</codeEntityReference> will be assigned by default.  You can use the
+							<codeEntityReference>T:DefaultAreaDef</codeEntityReference> asset to assign a different area as the default.
+							</para>
+			
+						</alert>
+						
+					</content>
+				
+				</section>
+				
+				<section>
+				
+					<title>Compile Input</title>
+					
+					<content>
+					
+						<para>
+						During the compile input step the input processors will compile everything needed to create the objects required by the rest of the NMGen build process.  
+						(I.e. The <token>InputGeometry</token>, <token>ProcessorSet</token>, and <token>ConnectionSet</token> objects.)  MeshFilter and Terrain components will
+						be triangulated, and off-mesh connections and NMGen processors created.
+						</para>
+						
+					</content>
+				
+				</section>
+				
+				<section>
+				
+					<title>Post-Process</title>
+					
+					<content>
+					
+						<para>
+						At this point all data needed to create the final input objects has been compiled.  During the post-process step the input processors are
+						given the oportunity to make final adjustmwents to the data before it is locked down in the immutable <token>InputGeometry</token>, <token>ProcessorSet</token>, 
+						and <token>ConnectionSet</token> objects.
+						</para>
+						
+					</content>
+				
+				</section>
+			
+			</content>
+		
+		</section>
+		
+	<relatedTopics>
+	
+		<link xlink:href="61341701-6cb3-408b-9b1e-d60e3fb817e1"/> <!-- Building Navmeshes -->
+		<link xlink:href="80abba67-1b0e-4ada-9be1-e12b386978d3"/> <!-- NavmeshBuild Config -->
+		<link xlink:href="b2097a0c-c41b-4d23-8861-2faccfc574f1"/> <!-- Advanced Build -->
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- Intro to NMGen -->
+	
+	</relatedTopics>
+		
+  </developerConceptualDocument>
+</topic>

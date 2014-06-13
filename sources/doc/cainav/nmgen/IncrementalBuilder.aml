@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="FCD34CAE-02FA-48fd-891E-FB82EE360F49" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+
+			<para>
+			The <token>IncrementalBuilder</token> implements a flexible build process that can be used at
+			design time to create <token>PolyMesh</token> and <token>DetailMesh</token> objects. <token>INMGenProcessor</token>'s
+			are used to customize the process for almost any need.
+			</para>
+			
+			<para></para>
+			<alert class="note">
+			
+				<para>
+				This builder is not suitable for use at run-time since it is designed for flexibility
+				rather than high performance.
+				</para>
+				
+				<para>
+				There are a lot of configuration settings to deal with during the build process.  See the <token>NMGenParams</token>
+				documentation for details, including recommendations.
+				</para>
+				
+			</alert>
+			
+			<para> 
+			Only one builder is needed if the navigation mesh will contain only a single tile.  Multi-tile meshes require
+			one builder for each tile.  (Builders are single use.)
+			</para>
+			
+			<code>
+				
+				// Example: A simple NMGen build.
+				
+				// Where 'mesh' is a TriangleMesh object containing all of the input triangles
+				// and 'config' is a NMGenParams object containing the configuration.
+				
+				// Create an input geometry object.
+				byte[] areas = NMGen.CreateDefaultAreaBuffer(mesh.triCount);
+				InputGeometryBuilder gbuilder = InputGeometryBuilder.Create(mesh, areas, 45.5f);
+				gbuilder.BuildAll();
+				InputGeometry geom = gbuilder.Result;
+				
+				// Create the incremental builder.
+				NMGenAssetFlag resultFlags = NMGenAssetFlag.PolyMesh | NMGenAssetFlag.DetailMesh;
+				IncrementalBuilder builder = IncrementalBuilder.Create(config
+						, resultFlags
+						, geom
+						, ProcessorSet.CreateStandard(ProcessorSet.StandardOptions));
+						
+				// Perform the build and check the result.
+				builder.BuildAll();
+				
+				switch (builder.State)
+				{
+						case NMGenState.Aborted:
+
+								// Handle the error.
+								// Check builder messages for details.
+
+						case NMGenState.Complete:
+
+								NMGenAssets result = builder.Result;
+
+								// Use the poly and detail mesh data.
+
+						case NMGenState.NoResult:
+
+								// No result was produced.  
+								// Unexpected for single-tile builds.  Not uncommon for multi-tile builds.
+								// Check builder messages for details.
+				}
+				
+		  </code>
+			
+    </introduction>
+   
+   <section address="highlevelprocess">
+    
+			<title>The Process</title>
+			
+			<content>
+			
+				<para>
+				The incremental builder follows the process described by <link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> topic.
+				</para>
+				
+				<mediaLink><image xlink:href="NMGenBuildStandard"/></mediaLink>       
+			 
+			</content>
+      
+  </section>
+	
+	<section address="polyMesh">
+	
+		<title>The Polygon Mesh</title>
+		
+		<content>
+		
+			<para>
+			The <token>IncrementalBuilder</token>'s main output is a <token>PolyMesh</token> object.
+			The polygon mesh is made up of convex polygons with between three and 
+			<codeEntityReference>F:org.critterai.nmgen.NMGen.MaxAllowedVertsPerPoly</codeEntityReference>
+			vertices. Each polygon includes edge link, area, flag data.
+			</para>
+			
+			<para>
+			Polygons may overlap, based on the value of
+			<codeEntityReference>P:org.critterai.nmgen.NMGenParams.WalkableHeight</codeEntityReference> used during the build.
+			</para>
+				
+			<para>
+			At the end of the build process all polygons should have at least one flag set.  Usually 
+			<codeEntityReference>F:org.critterai.nmbuild.NMBuild.DefaultFlag</codeEntityReference>.
+			</para>
+				
+			<para>
+			All polygons will have a non-zero area id. (&lt;= <codeEntityReference>F:org.critterai.nmgen.NMGen.MaxArea</codeEntityReference>)
+			</para>
+
+			<mediaLink><image xlink:href="PolyMesh-Basic"/></mediaLink>
+			
+		</content>
+		
+	</section>
+	
+	<section address="detailMesh">
+	
+		<title>The Detail Mesh</title>
+		
+		<content>
+		
+			<para>An common optional output of the <token>IncrementalBuilder</token> is a <token>DetailMesh</token> object.</para>
+			
+			<para>
+			Pathfinding only uses the <token>PolyMesh</token>.  For storage efficiency and speed the polygon mesh doesn't have a lot of height accuracy.  
+			But some secondary navigation features require more accurate height data. The detail mesh provides the extra detail.
+			</para>
+			
+			<para>
+			The detail mesh consists of sub-meshes, one for each polygon in the polygon mesh. Each sub-mesh is a 
+			triangle mesh that contains all the vertices of its associated polygon, plus additional vertices 
+			that provide the extra height detail.
+			</para>
+			
+		</content>
+		
+	</section>
+    
+	<section address="processors">
+	
+		<title>The NMGen Processors</title>
+		
+		<content>
+		
+			<para>The NMGen processors provided by the <token>ProcessorSet</token> are what give the incremental builder its flexibility and power.
+			Without any processors, only a very simple polygon mesh can be created.</para>
+			
+			<para>Processors are called during the post-processor step of each stage, in ascending priority. A processor may perform processing 
+			during a single stage or multiple stages.
+			</para>
+			
+			<para>
+			Any oject that implements <token>INMGenProcessor</token> can act as a processor.  The 
+			<codeEntityReference>T:org.critterai.nmbuild.NMGenProcessor</codeEntityReference> abstract class provides a good base to start from.
+			</para>
+			
+			<para>Two common uses for processors include polygon area and flag assignment.</para>
+			
+			<section>
+			
+				<title>Area Assignment</title>
+				
+				<content>
+				
+					<para>
+					Area assignment can happen via the <token>InputGeometry</token> object.  But sometimes that isn't convenient or possible.  Another choice 
+					is to mark areas into the compact heightfield.  You can use the <codeEntityReference>T:org.critterai.nmbuild.AreaBoxMarker</codeEntityReference>,
+					<codeEntityReference>T:org.critterai.nmbuild.AreaCylinderMarker</codeEntityReference>, and 
+					<codeEntityReference>T:org.critterai.nmbuild.AreaConvexMarker</codeEntityReference> processors to do this.
+					</para>
+					
+					<para>
+					Because processors are prioritized, area markers can overwrite each other in useful ways.  For example, lets say you have a swamp area with 
+					a dry island contained within it.  The swamp area needs to be assigned one area while the island needs to be a assigned a different area.
+					If you mark the swamp, the island will be included.  This can't be helped since all markers are convex.  But by marking the island with a higher 
+					priority marker, it will be assigned the proper area.
+					</para>
+
+					<para>
+					Another powerful use of area markers is applying <codeEntityReference>F:org.critterai.nmgen.NMGen.NullArea</codeEntityReference>.
+					Sometimes the build process will create polygons in areas you don't like.  For example, there may be clutter on the ground that can technically
+					be walked across, but looks bad when it is.  If you mark the area with <codeEntityReference>F:org.critterai.nmgen.NMGen.NullArea</codeEntityReference>,
+					then the area will be excluded from the final polygon mesh.
+					</para>
+					
+				</content>
+				
+			</section>
+			
+			<section>
+			
+				<title>Polygon Flag Assignment</title>
+				
+				<content>
+				
+				<para>
+				Polygon flags can be managed entirely in the <token>Navmesh</token> object.  But sometimes the flags are best assigned to the <token>PolyMesh</token>
+				during the build process.  For example, you may want to assign the 'swim' flag to all 'water' area polygons.
+				</para>
+				
+				<para>
+				The <codeEntityReference>T:org.critterai.nmbuild.ApplyPolygonFlags</codeEntityReference> processor can be used to add flags to all polygons.
+				</para>
+				
+				<para>
+				The <codeEntityReference>T:org.critterai.nmbuild.AreaFlagMapper</codeEntityReference> processor can be used to add flags to polygons based on
+				the area id of each polygon.
+				</para>
+				
+				</content>
+				
+			</section>
+			
+		</content>
+		
+	</section>
+		
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nmbuild.IncrementalBuilder</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmbuild.NMGenAssets</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmgen.NMGenParams</codeEntityReference>
+
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- NMGen Intro -->
+		<link xlink:href="3D048EB4-7BD1-407a-9442-9DE60C82266E"/> <!-- Compiling Input -->
+		<link xlink:href="ad1c623a-56b7-4aa6-921e-f2d67b39622a"/> <!-- Creating Navmesh -->	
+		<link xlink:href="e76dda55-5f91-4c2a-bf8d-fa34de59e82b"/> <!-- Multi-Tile -->	
+		<link xlink:href="6fb3041b-e9be-4f03-868b-dcac944df19b"/> <!-- Advanced: Heightfield Intro -->
+		<link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> <!-- Advanced: Core Build Process -->
+	
+	</relatedTopics>
+    
+  </developerConceptualDocument>
+</topic>

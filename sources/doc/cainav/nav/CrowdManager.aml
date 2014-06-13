@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="2b87d0be-b6ae-409d-97eb-2a3b37c508ad" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+ 
+ 		<introduction>
+		
+			<para>
+			The crowd manager is the big beast of the navigation components.  It not only handles a lot of the path management for you, but also
+	 		local steering and dynamic avoidance between navigation clients. I.e. It can keep your agents from running into each other.
+			</para>
+			
+			<para>
+			Core Class: <token>CrowdManager</token>
+			</para>
+			
+			<para>
+			The <token>NavmeshQuery</token> and <token>PathCorridor</token> classes provide perfectly good, easy to use path planning features.  But in
+			the end they only give you points that your navigation client should be moving toward.  When it comes to deciding things like client velocity
+			and steering to avoid other clients, that is up to you to implement.  Unless, of course, you decide to use the crowd manager.
+			</para>
+			
+			<para>
+			Basically, you add an navigation client (agent) to the crowd manager, providing various configuration settings such as 
+			maximum speed and acceleration.  You also provide a local target to more toward.  The crowd manager then provides, with every update, the new 
+			agent position and velocity for the frame. The movement will be constrained to the navigation mesh, and steering will be applied to ensure 
+			agents managed by the crowd manager do not collide with each other.
+			</para>
+			
+			<para>
+			This is very powerful feature set.  But it comes with limitations.
+			</para>
+			
+			<para>
+			The biggest limitation is that you must give control of the agent's position and velocity completely over to the crowd manager.  You can 
+			update things like maximum speed and acceleration.  But in order for the crowd manager to do its thing, it can't allow you to constantly be 
+			giving it overrides to position and velocity.  So you give up direct control of the agent's movement.  It belongs to the crowd manager.
+			</para>
+			
+			<para>
+			The second biggest limitation revolves around the fact that the crowd manager deals with local planning.  The agent's target should never
+			be more than 256 polygons aways from its current position.  If it is, you risk your agent failing to reach its target.  So you may
+			still need to do long distance planning and provide the crowd manager with intermediate targets.
+			</para>
+			
+			<para>
+			Other significant limitations:
+			</para>
+			
+			<list class="bullet">
+				<listItem>All agents using the crowd manager use the same <token>NavmeshQueryFilter</token>.</listItem>
+				<listItem>Crowd management is relatively expensive.  The maximum agents under crowd management at any one time is 
+				around 20.</listItem>
+			</list>
+			
+			<para>
+			The <token>CAINavExplorerDownload</token> includes a Crowd Manager Demo that lets you see the manager in action.
+			</para>
+			
+		</introduction>
+ 
+ 	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nav.NavmeshQuery</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshQueryFilter</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.CrowdManager</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.CrowdAgent</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.CrowdAgentParams</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.CrowdAvoidanceParams</codeEntityReference>
+
+		<link xlink:href="1b3cfec9-7cd3-444c-b83d-dfc551454822"/> <!-- Nav Intro -->
+		<link xlink:href="6cf1c77d-725a-4f3e-bcbf-62e7fc5e2bc6"/> <!-- Navmesh -->
+		<link xlink:href="40b9b3c3-f08f-4fcf-b85f-37efea236d43"/> <!-- NavmeshQuery -->
+		<link xlink:href="24e74166-c465-4e0b-87eb-818c4f7f3a32"/> <!-- PathCorridor -->
+	
+	</relatedTopics>
+ 
+  </developerConceptualDocument>
+</topic>

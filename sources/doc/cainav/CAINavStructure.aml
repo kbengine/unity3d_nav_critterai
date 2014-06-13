@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8a99e478-a235-49ef-986d-db53a0bc50bb" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+		<introduction>
+		 
+			<para>
+			The first thing to understand about <application>CAINav</application> is that it is 
+			not a plug-and-play solution. Well, NMGen in <token>Unity</token> is plug-and-play. But creating the 
+			navigation mesh is just the starting point. To use the navigation mesh you'll need to implement your own 
+			code. And to do that you'll need to understand <application>CAINav's</application> structure.
+			</para>
+			
+			<para>
+			All core features of <application>CAINav</application> can be used in .NET-only applications.  But there are many
+			ease-of use extensions available for use only in Unity Pro.  Any library or namespace containing 'u3d' are Unity-only.
+			</para>
+			
+			<para></para>
+			<alert class="note">
+			
+				<para>Definitions</para>
+			
+				<para>
+				Core features: Elements (classes, interfaces, etc.) that provide the core features. They are part of the .NET API 
+				and are available for use by all users.
+				</para>
+				
+				<para>Common extensions: Elements that provide ease-of-use features for all users.</para>
+				
+				<para>Unity extensions: Elements that provide ease-of-use features specific to Unity users.</para>
+			
+			</alert>
+			
+		</introduction>
+	 
+		<section address="10KView">
+		
+			<title>The 10,000 Meter View</title>
+			
+			<content>
+			
+				<para>
+				The below diagram shows the relationships of the core components from a construction/build 
+				perspective.
+				</para>
+				
+				<mediaLink>
+					<image xlink:href="CaiNavComponents"/>
+				</mediaLink>
+				
+			</content>
+			
+		</section>
+		
+		<section address="SourceGeometry">
+		
+			<title>1 - Input Data</title>
+			
+			<content>
+			
+				<para>
+				As a minimum you have to have some sort of source 
+				geometry from which you can obtain vertex and triangle data. In Unity, the source geometry is
+				usually obtained from MeshFilters and Terrain objects. But anything that provides vertices and 
+				triangles can be used.
+				</para>
+				
+				<para>
+				For more complex builds you may also need to provide other data such as off-mesh connections and
+				custom build processors.
+				</para>
+				
+				<para>
+				Common Extensions:
+				<codeEntityReference>T:org.critterai.nmbuild.InputGeometry</codeEntityReference>,
+				<codeEntityReference>T:org.critterai.nmbuild.ProcessorSet</codeEntityReference>
+				</para>
+				
+				<para>
+				The Unity extensions implement a flexible and extensible input build process that helps
+				gather everyting together for you.
+				</para>
+
+				<para>
+				Triangle wrap direction on the xz-plane is used for the detection of which face of the triangle is 
+				considered up.  The y-axis is up/down. A picture is worth a thousand words. If your source geometry is wrapped differently 
+				than shown, then it will need to be translated into this format before use in the NMGen 
+				build process.
+				</para>
+				
+				<para></para>
+				<alert class="note">
+				  <para>
+				  CAINav uses the OpenGL coordinate system.
+				  </para>
+				</alert>
+				
+				<mediaLink>
+					<image xlink:href="WrapDirection"/>
+				</mediaLink>
+				
+			</content>
+			
+		</section>
+		
+		<section address="NMGenBuildConfig">
+		
+			<title>2 - NMGen Configuration</title>
+			
+			<content>
+			
+				<para>
+				Source geometry may represent exterior natural geography or interior environments in any number 
+				of different styles. The navigation clients may be human-type agents, vehicles, 
+				wheeled robots, etc.; each with its own locomotion restrictions. For these reasons NMGen supports a large variety of 
+				configuration settings that adjust how the navigation mesh data is generated.
+				</para>
+				
+				<para>
+				Core Classes: 
+				<codeEntityReference>T:org.critterai.nmgen.NMGenParams</codeEntityReference>,
+				<codeEntityReference>T:org.critterai.nmgen.NMGenTileParams</codeEntityReference>
+				</para>
+				
+			</content>
+			
+		</section>
+		
+		<section address="PolyMeshes">
+		
+			<title>3 - Polygon and Detail Meshes</title>
+			
+			<content>
+			
+				<para>
+				The input data and NMGen configuration are used to create two types of meshes. The 
+				polygon mesh provides the data needed for pathfinding operations. The optional detail mesh provides extra 
+				height detail helpful for certain position queries. (Better height position at a higher memory cost.) 
+				Together, these meshes provide the core structural data for the navigation mesh.
+				</para>
+				
+				<para>
+				Core Classes: 
+				<codeEntityReference>T:org.critterai.nmgen.PolyMesh</codeEntityReference>,
+				<codeEntityReference>T:org.critterai.nmgen.PolyMeshDetail</codeEntityReference>
+				</para>
+			
+				<mediaLink>
+					<image xlink:href="PolyMesh-Basic"/>
+				</mediaLink>
+				
+			</content>
+			
+		</section>
+		
+		<section address="OffMeshConnections">
+		
+			<title>4 - Off-Mesh Connections</title>
+			
+			<content>
+			
+				<para>
+				In some cases there are special travel routes not based on the surface of the source geometry. For example,
+				an agent may be able to vault over a railing.  Off-mesh connections can be used to represent
+				these routes and are connected to the navigation mesh as a single edge.
+				</para>
+				
+				<para>
+				Common Extensions:
+				<codeEntityReference>T:org.critterai.nmbuild.ConnectionSet</codeEntityReference>
+				</para>
+			
+				<mediaLink>
+					<image xlink:href="OffMeshConnection"/>
+				</mediaLink>
+				
+			</content>
+			
+		</section>
+		
+		<section address="NavmeshTiles">
+		
+			<title>5 - Navigation Mesh Tiles </title>
+			
+			<content>
+			
+				<para>
+				Tiles contain the data that makes up the navigation mesh. A navigation mesh 
+				cannot exist without at least one tile.  The ability to have multiple 
+				tiles in a navigation mesh opens up a huge variety of options. Think: Navigation meshes that 
+				cover large or complex areas, swapping tiles in and out at runtime.
+				</para>
+				
+				<para>
+				As a minimum, each tile contains a polygon mesh.  It can also contain optional data such as
+				a detail mesh and off-mesh connections.
+				</para>
+				
+				<para>
+				Core Classes:
+				<codeEntityReference>T:org.critterai.nav.NavmeshTileBuildData</codeEntityReference>,
+				<codeEntityReference>T:org.critterai.nav.NavmeshTileData</codeEntityReference>,
+				<codeEntityReference>T:org.critterai.nav.NavmeshTile</codeEntityReference>
+				</para>
+				
+			</content>
+			
+		</section>
+		
+		<section address="Navmesh">
+		
+			<title>6 - Navigation Mesh</title>
+			
+			<content>
+			
+				<para>
+				A navigation mesh may contain a single rectangle tile, or a grid of square tiles. It is compact 
+				and efficient with various methods of serializing, de-serializing, and swapping data in and out at 
+				runtime.
+				</para>
+				
+				<para>Core Class: 
+				<codeEntityReference>T:org.critterai.nav.Navmesh</codeEntityReference>
+				</para>
+				
+				<para>Unity Extensions: 
+				<codeEntityReference qualifyHint="false">T:CAIBakedNavmesh</codeEntityReference>,
+				<codeEntityReference>T:org.critterai.nav.u3d.INavmeshData</codeEntityReference>
+				</para>
+				
+			</content>
+			
+		</section>
+		
+		<section address="NavmeshQuery">
+		
+			<title>7 - Navigation Mesh Query</title>
+			
+			<content>
+			
+				<para>
+				The navigation mesh query is what all clients use to perform pathfinding and related 
+				queries against the navigation mesh. Even if you use the crowd manager for steering, you'll 
+				need to use a navigation mesh query for non-local pathfinding and other higher level planning.
+				</para>
+				
+				<para>
+				Core Class: 
+				<codeEntityReference>T:org.critterai.nav.NavmeshQuery</codeEntityReference>
+				</para>
+			 
+				<mediaLink>
+					<image xlink:href="Explorer-StraightPath"/>
+				</mediaLink>
+				
+			</content>
+			
+		</section>
+		
+		<section address="NavmeshQueryFilter">
+		
+			<title>8 - Query Filter</title>
+			
+			<content>
+			
+				<para>
+				Filters allow pathfinding behavior to be altered at runtime without changing the structure of 
+				the navigation mesh. They are used in most query methods to indicate which navigation mesh polygons 
+				are considered accessible and which aren't. They also define the traversal cost of different types 
+				of polygons.
+				</para>
+				
+				<para>Filters can be specific to individual agents or shared between groups of agents.</para>
+				
+				<para>
+				Core Class: 
+				<codeEntityReference>T:org.critterai.nav.NavmeshQueryFilter</codeEntityReference>
+				</para>
+				
+			</content>
+			
+		</section>
+		
+		<section address="CrowdManager">
+		
+			<title>9 - Crowd Manger</title>
+			
+			<content>
+			
+				<para>
+				The crowd manager implements local steering. You provide it with agents
+				to manage and local targets for the agents to move to, and it handles steering the agents in 
+				order to avoid collisions with other agents.
+				</para>
+				
+				<para></para>
+				<alert class="important">
+				<para>
+				The use of the term "local" is important. CrowdManager can't do long distance path planning.
+				</para>
+				</alert>
+				
+				<para>Core Class: 
+				<codeEntityReference>T:org.critterai.nav.CrowdManager</codeEntityReference>
+				</para>
+				
+			</content>
+			
+		</section>
+		
+		<section address="dependencies">
+		
+			<title>Dependencies and Layers</title>
+			
+			<content>
+			
+				<para><application>CAINav</application> consists of multiple libraries, some optional.</para>
+
+				<para></para>
+				<alert class="note">
+					<para>The plug-in and core libraries are required. The rest are technically optional.</para>		
+					<para>Duplicate dependencies are not shown.</para>		
+					<para>Some optional 'extras' available for Unity are not shown.</para>											
+				</alert>
+
+				<mediaLink>
+					<image xlink:href="CAINavDependencies"/>
+				</mediaLink>
+
+			</content>
+			
+		</section>
+		
+	</developerConceptualDocument>
+</topic>

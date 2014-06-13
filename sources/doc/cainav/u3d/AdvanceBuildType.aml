@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="b2097a0c-c41b-4d23-8861-2faccfc574f1" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+		
+      <para>
+			The <codeEntityReference>T:NavmeshBuild</codeEntityReference> asset's advanced build type serves three main purposes:
+			</para>
+			
+			<list class="bullet">
+				<listItem>Provides extra debug information to help you figure out problems, or better set the configuration.</listItem>
+				<listItem>Allows a partial rebuilds of multi-tiled navigation meshes.</listItem>
+				<listItem>Performs background processing for long builds.</listItem>
+			</list>
+			
+			<para>
+			The advanced build uses the <ui>Navmesh Build Manager</ui> editor window that can be opened via the <ui>CritterAI</ui> menu.
+			</para>
+			
+			<para>
+			The main drawback of the advanced build is that things can get a bit complex. With lots of extra options you need to know what you are doing.
+			</para>
+			
+			<para>
+			The advanced build breaks the build down into four steps:
+			</para>
+			
+			<list class="bullet">
+				<listItem>Compile the input.</listItem>
+				<listItem>Set and accept the NMGen Configuration</listItem>
+				<listItem>Build and preview the result.</listItem>
+				<listItem>Bake the result to the target.</listItem>
+			</list>
+
+			<para>
+			While the standard build handles all these steps in one click, they are all separate steps in the advanced build.
+			</para>
+
+			<para></para>
+			<alert class="warning">
+			
+				<para>
+				The advanced build features are currently in an experimental state. The <token>Unity</token> editor can be finicky when it comes to running background processes.
+				Also, exception handling is not fully tested. 
+				</para>
+				
+				<para>
+				Make sure you save your scenes frequency when using the advanced build features.
+				</para>
+				
+			</alert>
+
+    </introduction>
+
+		<section>
+		
+			<title>Limitations &amp; Gotchas</title>
+			
+			<content>
+			
+				<para>
+				Because the advanced build lets you go back and forth between the build and the scene while the build is in a partially complete state, there are some things you need to be
+				careful of.
+				</para>
+				
+				<para>
+				The input is compiled manually.  If you make a change to the scene in the middle of a build, you will need to recompile the input before the build will
+				pick up the changes.
+				</para>
+				
+				<para>
+				Certain configuration settings are locked in once you reach the builder stage.  If you want to change these settings after you've started the build you'll need to
+				re-initialize the builder, throwing away any unbaked results.
+				</para>
+				
+				<para>
+				If you chose to base a new build on the current target's navigation mesh then you will be automatically locked into certain configutration settings from the target.
+				This includes the target's origin.  Any new scene geometry below the origin will not be included in the new build.
+				</para>
+				
+				<para>
+				The input data cannot survive a Unity Editor reset.  A Unity Editor reset will occur, for example, when scripts are recompiled.  If an editor reset occurs
+				during a build the build will enter a recovery state requiring manual intervention.
+				</para>
+				
+				<para>
+				Be careful when switching scenes while performing an advanced build.  If you re-compile the input, it will gather the input from the currently open scene.
+				</para>
+				
+				<para>
+				The advanced builder stores intermediate build data in the <codeEntityReference>T:NavmeshBuild</codeEntityReference> asset.  This data is not cleared when
+				you bake the mesh.  You must exit the build using the <ui>Exit Build</ui> button.  Otherwise, the next time you interact with
+				the build you'll start with the cached data.  The primary reason for this behavior is to prevent the loss of build data in case of an accidental Unity Editor reset.
+				But it is also a useful behavior if you happen to want to return to a partially complete build at a later time.
+				</para>
+			
+				<para>
+				Don't forget to bake your build result.  Baking to the target is never automatic.
+				</para>
+			
+			</content>
+		
+		</section>
+
+		<section>
+		
+			<title>Input Compile</title>
+			
+			<content>
+			
+				<para>
+				The first step in the advanced build is the input compile.  Once you run the compile you'll get useful debug information along with visualization options.
+				</para>
+				
+				<mediaLink>
+          <image xlink:href="AdvancedBuild-Input"/>
+        </mediaLink>
+				
+				<para>
+				You can come back and re-compile the input at any point in the build process.  This is especially helpful if you are tweaking the scene and partially
+				rebuilding a multi-tile navigation mesh.
+				</para>
+			
+			</content>
+		
+		</section>
+		
+		<section>
+		
+			<title>Configuration</title>
+			
+			<content>
+			
+				<para>
+				During the configuration step you set the NMGen configuration that same as you would during a standard build.
+				</para>
+				
+				<mediaLink>
+          <image xlink:href="AdvancedBuild-Config"/>
+        </mediaLink>
+				
+				<para>
+				Once the configuration is set, you can start a new build from scratch using the <ui>From Scratch</ui> button.  If the target contains a
+				supported multi-tile navigation mesh, then you can initialize the build from the target using the <ui>Based on Target</ui> button.  This will
+				load the existing mesh's configuration and tile data into the builder so you can perform a partial rebuild.
+				</para>
+			
+			</content>
+		
+		</section>
+		
+		<section>
+		
+			<title>The Builder</title>
+			
+			<content>
+			
+				<para></para>
+				<alert class="note">
+			
+					<para>
+					There are two types of builders, one for single-tile and one for multi-tile meshes.  This section covers the multi-tile version.
+					The single-tile version is simple, so it is not covered here.
+					</para>
+				
+				</alert>
+				
+				<para>
+				The builder allows you to build, tweak, and rebuild your navigation mesh as needed.  Once satisfied you can bake the result to the build target.
+				Various debug visualizations are available to help you see what is going on with the build.  Some visualizations are only available in zone mode.
+				</para>
+				
+				<mediaLink>
+          <image xlink:href="AdvancedBuild-Builder"/>
+        </mediaLink>
+				
+				<para></para>
+				<alert class="warning">
+				
+					<para>
+					Be careful.  Some of the visualizations, especially the <ui>Input Geometry</ui> visualization, are framerate killers.
+					</para>
+					
+				</alert>
+				
+				<para>
+				It is possible to operate on only part of a navigation mesh by entering zone mode.  You can do this by clicking a tile and adjusting
+				the <ui>Zone Size</ui> to get the coverage you desire.  You can set the zone size to zero if you only want to select a single tile.
+				Exit zone mode by clicking on the selected tile.
+				</para>
+			
+				<para>
+				Builds are performed in the background with the progress shown in the tile grid.  Be aware that the background builder is shared by
+				all build operations in a priority queued manner.  It also limits the number of concurrent operations.  So if you are building multiple 
+				meshes at once, or perform an input compile in the middle of an in-progress build, don't be surprise when some operations have to wait for 
+				others to complete.  Input compiles have the highest priority, followed by zone builds.  'Build All' builds have the lowest priority.
+				</para>
+			
+			</content>
+		
+		</section>
+		
+	<relatedTopics>
+	
+		<link xlink:href="61341701-6cb3-408b-9b1e-d60e3fb817e1"/> <!-- Building Navmeshes -->
+		<link xlink:href="fb2ca7fa-3b03-41c6-88d8-731c44fb7879"/> <!-- Input Build -->
+		<link xlink:href="80abba67-1b0e-4ada-9be1-e12b386978d3"/> <!-- NavmeshBuild Config -->
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- Intro to NMGen -->
+	
+	</relatedTopics>
+		
+  </developerConceptualDocument>
+</topic>

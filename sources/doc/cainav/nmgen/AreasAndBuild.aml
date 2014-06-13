@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="21046960-3dc1-4369-a092-5f5bba4f752c" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+		
+      <para>
+			Areas in <application>CAINav</application> are represented by a byte value between zero and 63.  In the navigation mesh they are assigned to polygons
+			and used to assign traversal cost.  For example, all polygons assigned an area of 24 may be assigned a cost of 1.5 while polygons
+			assigned an area of 63 may be assigned a cost of 1.0.  The meaning and cost associated with each area is defined by the end user.  The only 
+			exception is 0, which is always considered to mean 'unwalkable'.
+			</para>
+			
+			<para>
+			Areas are also used in the NMGen build process.  But while their purpose and use in the navigation mesh is fairly straight forward,
+			things can get complicated in the build process.  This topic covers various ways of using areas during the build process to get the navigation mesh you want.
+			</para>
+			
+			<para></para>
+			<alert class="note">
+			
+				<para>
+				Area constants can be found in the <codeEntityReference>T:org.critterai.nmgen.NMGen</codeEntityReference> and
+				<codeEntityReference>T:org.critterai.nav.Navmesh</codeEntityReference> classes.
+				</para>
+
+			</alert>
+			
+    </introduction>
+		
+		<section>
+		
+			<title>Why Use Areas in the Build Process</title>
+			
+			<content>
+			
+				<para>
+				If you assign everything to only a single area during the NMGen build process then polygons will form based solely 
+				on the structure of the source geometry.  Polygon edges will form along the borders of obstructions, in structural portals such as doorways, etc.
+				The surface type of the source geometry is unknown and can't be taken into account. So, for example, a single polygon may cover both 
+				meadow and swamp surfaces, even though the cost of traversing the surfaces is different.
+				</para>
+				
+				<para>
+				Essentially, areas allow you to specify surface type so that the build process can make sure that polygons are formed such that they don't
+				overlap different area types.  Polygon edges will always form at the boundry between different areas.
+				</para>
+				
+				<para>
+				The obvious benefit of forming polygons based on surface type is that it allows you to properly control traversal cost.  But there are other purposes.
+				One example is flag assignment. Polygons have an associated 16-bit flags field.  These flags are used to filter polygons during pathfinding.  For example, you 
+				can specify that all polygons with the 0x10 flag are inaccessible, so pathfinding will ignore the polygons.  Areas can be used to ensure that polygons
+				form in a way that allow flags to be used properly.
+				</para>
+				
+				<para>
+				Let's say you have a bridge that can partially collapse.  There is no way for the build process to know exaclty which part of the bridge can collapse,
+				so you can't guarentee that separate polygons will exist at the proper location.  Unless, of course, you mark the collapse location with a different area 
+				than the rest of the bridge.
+				</para>
+				
+				<para>
+				In the below example, cylinder and convex areas are marked into the mesh.  The convex marker was given a higher priority so that it overwrites part 
+				of the cyclinder area.
+				</para>
+				
+				<mediaLink>
+					<image xlink:href="OverlappingAreaMarkers"/>
+				</mediaLink>
+				
+				<para>
+				As you can see, areas provide a powerful method of ensuring the final mesh structure is what you need it to be.
+				</para>
+			
+			</content>
+		
+		</section>
+		
+		<section>
+		
+			<title>The Power of Zero</title>
+			
+			<content>
+			
+				<para>
+				The zero area is called the 'NullArea' and has a special meaning to the NMGen build process.  Any surface marked as NullArea
+				is unwalkable and no polygons will form.  All NullArea surfaces are considered obstacles.
+				</para>
+				
+				<para>
+				The build process automatically handles NullArea assignment for most cases.  The surface's slope may be too steep.  (E.g. Walls)  The
+				polygons formed on the surface may be too small to be of use.  (E.g. Stairway railings or a counter top.)  The surface may be inaccessible due 
+				to height restrictions. (E.g. The floor under a table.)
+				</para>
+				
+				<para>
+				But sometimes you may want to manually block off an area.  For example, let's say you have a surface covered by burning rubbish.  The structure
+				of the surface may be walkable, but you never want it to be walkable.  In cases such as this you can manually mark the surface as a NullArea and
+				the build process will treat it as an obstacle.
+				</para>
+				
+				<para>
+				The NullArea is treated differently than other areas in another way.  Normal areas can be reassigned at will.  You can assign a surface to area
+				15 during one part of the build process then reassign part of it to area 22 later on.  A NullArea can never be reassigned.  Once a NullArea, always
+				a NullArea.  You never have to worry about accidentally making a NullArea walkable again.
+				</para>
+			
+			</content>
+		
+		</section>
+		
+		<section>
+		
+			<title>How to Assign Areas</title>
+			
+			<content>
+			
+				<para>
+				There are three points in the build process where you can assign areas:
+				</para>
+				
+				
+				<list class="bullet">
+					<listItem>To the source geometry triangles when compiling the input.</listItem>
+					<listItem>To convex areas in the <token>CompactField</token> object.</listItem>
+					<listItem>To polygons in the <token>PolyMesh</token> object.</listItem>
+				</list>
+			
+				<para></para>
+			  <alert class="note">
+			
+					<para>
+					Technically, you can't perform a NMGen build without assigning areas.  At some point in the build it will detect
+					that you haven't assigned areas and will assign all surfaces to a default area.  
+					</para>
+				
+				</alert>
+
+				<section>
+				
+					<title>Source Geometry Area Assignment</title>
+				
+					<content>
+					
+						<para>
+						The first point at which you can assign areas is during the input compile.  You can assign each source geometry triangle to an area.
+						This is a great place to assign areas if your source geometry is inherently categorized by surface type.  E.g. All bridge and sidewalk
+						meshes get one area while all water meshes get a different area.
+						</para>
+						
+						<para>
+						Both the <codeEntityReference>T:org.critterai.nmbuild.InputGeometryCompiler</codeEntityReference> and
+						<token>InputGeometry</token> classes provide ways to assign areas to triangles.  The <token>Unity</token> build process
+						includes the ability to assign area by tag assignment or mesh.
+						</para>
+					
+					</content>
+				
+				</section>
+			
+				<section>
+				
+					<title>Marking the CompactHeightfield</title>
+				
+					<content>
+					
+						<para>
+						In some cases it either isn't possible or isn't appropriate to assign areas to the source geometry.  The next option is to mark areas 
+						directly into the <token>CompactField</token> during its post-processing step.  The 
+						<codeEntityReference>T:org.critterai.nmbuild.AreaBoxMarker</codeEntityReference>,
+					  <codeEntityReference>T:org.critterai.nmbuild.AreaCylinderMarker</codeEntityReference>, and 
+					  <codeEntityReference>T:org.critterai.nmbuild.AreaConvexMarker</codeEntityReference> classes can be used to mark arbitrary convex areas
+						into the heightfield.
+						</para>
+						
+						<para>
+						This is the most accurate method of marking an area since marking occurs at the resolution of the heightfield.  (I.e. The cell size.)
+						However, if abused it can create a lot of extra polygons.
+						</para>
+					
+						<para></para>
+			      <alert class="note">
+					
+							<para>
+							The above area markers and the build process supports priority assignment, so it is possible to use overlapping markers.  The overlapped
+							area will be assigned the area of the highest priority marker.
+							</para>
+						
+						</alert>
+					
+					</content>
+				
+				</section>
+				
+				<section>
+				
+					<title>Area Assignment in the PolyMesh</title>
+					
+					<content>
+					
+						<para>
+						Each polygon in the <token>PolyMesh</token> has an area assignment that is inherited from the earlier in the build process.  This is the value
+						that will be assigned to the polygon once it is added to the navigation mesh.  At this point the polygons are pretty much fixed, so it isn't particularly
+						useful to assign the NullArea.  But sometimes it is useful to perform some final area adjustements.  For example, if you assigned an area only
+						to ensure proper polygon formation, and the area isn't needed for adjusting traversal cost in the navigation mesh, you can re-assign the area to
+						a default area. (I.e. Clean things up.)
+						</para>
+					
+					</content>
+				
+				</section>
+			
+			</content>
+		
+		</section>
+ 
+	<relatedTopics>
+	
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- Intro to NMGen -->
+
+	</relatedTopics>
+ 
+  </developerConceptualDocument>
+</topic>

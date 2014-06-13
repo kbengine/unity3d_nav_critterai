@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e76dda55-5f91-4c2a-bf8d-fa34de59e82b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+	
+		<introduction>
+		
+		<para>
+		A multi-tile navigation mesh consists of a group of square tiles layed out in a grid on the xz-plane.  Each tile in the mesh consists of its
+		own polygon mesh, detail mesh, and off-mesh connection data.  The tiles are linked together when added to the navigation mesh to form
+		the full navigation mesh.
+		</para>
+		
+		<para>This topic covers the extra steps necessary to create a multi-tile navigation mesh.</para>
+		
+		</introduction>
+		
+		<section>
+		
+			<title>The Multi-Tile Build Process</title>
+			
+			<content>
+			
+			<para>
+			The process for building multi-tile navigation meshes is very similar to building a single-tile mesh.  The main difference is that you need to
+			repeat the <token>IncrementalBuilder</token> and tile build steps for each tile, then combine the result into the final navigation mesh.  You also have a new
+			input data class: <token>TileSetDefinition</token>.  This class combines the <token>InputGeometry</token> and some configuration settings to define
+			the tile set.
+			</para>
+			
+			<code>
+				// Example: A simple multi-tile navigation mesh build.
+
+				// Where 'geom' is an InputGeometry object and 'pset' is a ProcessorSet object.
+
+				NMGenParams config = new NMGenParams();
+
+				// Load the various standard config settings based on your needs.
+				// E.g. cell size and agent settings.
+				
+				// ...
+
+				// Then set the tile settings.
+				// The border size must be greater than zero, otherwise the tiles won't connect
+				// properly when added to the navigation mesh.  You should almost always use
+				// the standard border size.
+
+				config.TileSize = 512;
+				config.BorderSize = NMGenParams.DeriveBorderSize(config);  // Standard border size.
+
+				// Create the tile set definition.
+				TileSetDefinition tdef = 
+						TileSetDefinition.Create(geom.BoundsMin, geom.BoundsMax, config, geom);
+
+				NMGenAssetFlag resultFlags = NMGenAssetFlag.PolyMesh | NMGenAssetFlag.DetailMesh;
+
+				List&lt;TileBuildAssets> tiles = new List&lt;TileBuildAssets>();
+				int maxPolys = 0;  // Need to keep track of maximum polys in a tile.
+
+				// Interate over all tiles and build.
+				for (int tx = 0; tx &lt; tdef.Width; tx++)
+				{
+						for (int tz = 0; tz &lt; tdef.Depth; tz++)
+						{
+								IncrementalBuilder builder = 
+										IncrementalBuilder.Create(tx, tz, resultFlags, tdef, pset);
+
+								// Perform the build and check the result.
+								builder.BuildAll();
+
+								switch (builder.State)
+								{
+										case NMGenState.Aborted:
+
+												// Handle the error.
+												// Check builder messages for details.
+
+										case NMGenState.NoResult:
+
+												// No result was produced.  This is not uncommon for multi-tile builds.
+												// E.g. There may be no geometry at the location.
+
+												continue;
+								}
+
+								// Completed with a result.  Build the tile data.
+
+								NMGenAssets assets = builder.Result;
+
+								// You can build the tile manually, but the tile build task will take
+								// care of standard error handling.
+
+								TileBuildTask task = TileBuildTask.Create(tx, tz
+										, assets.PolyMesh.GetData(false), assets.DetailMesh.GetData(false)
+										, ConnectionSet.CreateEmpty()  // Or use your connection set.
+										, false, 0);
+
+								task.Run();
+
+								if (task.TaskState == BuildTaskState.Aborted)
+								{
+										// Perform error handling.
+										// Check task messages for details.
+								}
+
+								TileBuildAssets tassets = task.Result;
+
+								// Store for later.
+								tiles.Add(tassets);
+
+								maxPolys = System.Math.Max(maxPolys, tassets.PolyCount);
+						}
+
+						// Create an empty navigation mesh large enough to hold all tiles
+						// that produced a result.
+
+						NavmeshParams nconfig = new NavmeshParams(tdef.BoundsMin
+								, tdef.Width, tdef.Depth
+								, tiles.Count, maxPolys);
+
+						Navmesh navmesh;
+
+						if ((Navmesh.Create(nconfig, out navmesh) &amp; NavStatus.Sucess) == 0)
+						{
+								// Perform error handling.
+						}
+
+						// Add the tiles to the navigation mesh.
+						foreach (TileBuildAssets tile in tiles)
+						{
+								// Note: Allowing the navigation mesh to assign the tile reference.
+								uint trash;
+								navmesh.AddTile(tile.Tile, Navmesh.NullTile, out trash);
+						}
+
+						// The navigation mesh is ready to use.
+						// You will usually serialize it for later use.
+				}
+			</code>
+			
+			</content>
+		
+		</section>
+		
+		<section>
+		
+			<title>Notes</title>
+			
+			<content>
+			
+				<para>
+				The tile size should usually be between 500 and 1000.  A tile size that is too small can result in extra,
+				unnecessary polygons and less than optimal pathfinding.  A value that is too large can be result in memory and 
+				performance issues during the build process.
+				In general, pick the largest size that also results in a good tile layout along the x and z axes.  (You want to avoid creation
+				of thin tiles along the upper bounds of the navigation mesh.)
+				</para>
+			
+				<para>
+				You can use a single <token>ConnectionSet</token> for the entire build.  The build process will add the appropriate
+				connections to each tile.
+				</para>
+				
+				<para>
+				Off-mesh connections can only be formed between a tile and its immediate neighbors.  For example, an off-mesh connection
+				can't start in tile (5, 8) and end in (5, 10) since it would skip over tile (5, 9).  So keep the length of off-mesh
+				connections less than (TileSize * XZCellSize).
+				</para>
+			
+			</content>
+		
+		</section>
+	
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nmbuild.IncrementalBuilder</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmgen.NMGenParams</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmgen.NMGenTileParams</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmbuild.TileSetDefinition</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmbuild.TileBuildTask</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmbuild.TileBuildAssets</codeEntityReference>
+	
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- NMGen Intro -->
+		<link xlink:href="3D048EB4-7BD1-407a-9442-9DE60C82266E"/> <!-- Compiling Input -->
+		<link xlink:href="FCD34CAE-02FA-48fd-891E-FB82EE360F49"/> <!-- Incremental Builder -->	
+		<link xlink:href="ad1c623a-56b7-4aa6-921e-f2d67b39622a"/> <!-- Creating Navmesh -->		
+	
+	</relatedTopics>
+	
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <item id="CAINavDownload"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>Download CAINav</ddue:linkText>
+    <ddue:linkUri>http://code.google.com/p/critterai/downloads/list</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="CAINavExplorerDownload"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>Sample Pack</ddue:linkText>
+    <ddue:linkUri>http://code.google.com/p/critterai/downloads/list</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="CompactField"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmgen.CompactHeightfield
+</ddue:codeEntityReference></item>
+  <item id="ConnectionSet"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmbuild.ConnectionSet
+</ddue:codeEntityReference></item>
+  <item id="CrowdManager"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nav.CrowdManager
+</ddue:codeEntityReference></item>
+  <item id="DetailMesh"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmgen.PolyMeshDetail
+</ddue:codeEntityReference></item>
+  <item id="IncrementalBuilder"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmbuild.IncrementalBuilder
+</ddue:codeEntityReference></item>
+  <item id="INMGenProcessor"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmbuild.INMGenProcessor
+</ddue:codeEntityReference></item>
+  <item id="InputGeometry"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmbuild.InputGeometry
+</ddue:codeEntityReference></item>
+  <item id="Navmesh"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nav.Navmesh
+</ddue:codeEntityReference></item>
+  <item id="NavmeshQuery"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nav.NavmeshQuery
+</ddue:codeEntityReference></item>
+  <item id="NavmeshQueryFilter"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nav.NavmeshQueryFilter
+</ddue:codeEntityReference></item>
+  <item id="PathCorridor"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nav.PathCorridor
+</ddue:codeEntityReference></item>
+  <item id="PolyMesh"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmgen.PolyMesh
+</ddue:codeEntityReference></item>
+  <item id="ProcessorSet"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmbuild.ProcessorSet
+</ddue:codeEntityReference></item>
+  <item id="TileSetDefinition"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmbuild.TileSetDefinition
+</ddue:codeEntityReference></item>
+  <item id="NMGenParams"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmgen.NMGenParams
+</ddue:codeEntityReference></item>
+</content>

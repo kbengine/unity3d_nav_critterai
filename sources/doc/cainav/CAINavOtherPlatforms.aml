@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="bb02b5c5-1ea9-4ae4-bc1f-ff0e446fb703" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+		<introduction>
+		
+			<para></para>
+			<alert class="warning">
+			
+				<para>
+				The only supported platforms are .NET and <token>UnityPro</token> on Windows. This topic exists
+				only because attempts are being made to keep <application>CAINav</application> interop friendly.
+				</para>
+			
+			</alert>
+			
+			<para>
+			The only provided distributions for <application>CIANav</application> are for the Windows OS. But follows are some
+			tips if you choose to try to get it working on other platforms.
+			</para>
+			
+			<para>
+			For the native code, you'll need to recompile the <codeinline>cai-nmgen-rcn</codeinline> and 
+			<codeinline>cai-nav-rcn</codeinline> libraries for your target platform.  
+			The native code is simple, with no Windows dependent headers.  If you are inspecting the current libraries and wondering 
+			about some unexpected dependancies, don't worry.  They are compiled with the /clr (common languare runtime) flag 
+			because it makes testing and debugging a whole lot easier. It isn't technically required.
+			</para>
+			
+			<para>
+			Some platforms, including iOS, require that the C# source code be added directly to the
+			Unity project.  This is easy.
+			Simply browse to <codeinline>\cai-nav-x.x.x\source\src\main\Assets</codeinline> in the distribution and copy the CAI folder 
+			into your project's <codeinline>Asset</codeinline> folder.
+			</para>
+			
+			<para></para>
+			<alert class="warning">
+			
+				<para>
+				A lot of the code protection depends on internal scoping. So take care not to accidentally use internally scoped elements
+				if you are using a source distribution. 
+				</para>
+			
+			</alert>
+			
+			<para>
+			Another item you need to be aware of is a serialization gotcha.  Never use 
+			the .NET <codeinline>ISerializable</codeinline> interface to serialize <application>CAINav</application> objects.  Use the various 
+			<codeinline>byte[]</codeinline> serialization methods instead.  It will save you a lot
+			of headaches down the road if you need to transfer serialized assets between projects on different platforms.
+			</para>
+			
+		</introduction>
+
+	</developerConceptualDocument>
+</topic>

@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ad1c623a-56b7-4aa6-921e-f2d67b39622a" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+  
+      <para>
+			The final step in the NMGen build process is to create the navigation mesh.  As a minimum you must have <token>PolyMesh</token> data.
+			<token>DetailMesh</token> and <token>ConnectionSet</token> data are optional.
+			</para>
+			
+			<para>
+			See the <link xlink:href="6cf1c77d-725a-4f3e-bcbf-62e7fc5e2bc6"/> topic for the general creation process.  This topic will cover two
+			helpful extensions.
+			</para>
+			
+    </introduction>
+		
+		<section>
+		
+			<title>Creating Tile Data</title>
+		
+			<content>
+			
+				<para>
+				Before you can create a navigation mesh you need to convert your source data into tile data.  There are various ways of doing this.
+				</para>
+				
+				<para>
+				One method is to use the 
+				<codeEntityReference>
+				M:org.critterai.nmbuild.NMBuild.GetBuildData(org.critterai.nmgen.BuildContext,System.Int32,System.Int32,org.critterai.nmgen.PolyMeshData,org.critterai.nmgen.PolyMeshDetailData,org.critterai.nmbuild.ConnectionSet,System.Boolean)
+				</codeEntityReference> utility method.
+				</para>
+			
+				<code>
+					// Example: Using the tile build data utility method.
+					
+					BuildContext logger = new BuildContext();
+
+					NavmeshTileBuildData tbd = NMBuild.GetBuildData(
+								logger
+								tileX, tileZ	// The tile location.  (0, 0) for single tile meshes.
+								, polyData	  // A PolyMeshData object.
+								, detailData  // Optional PolyMeshDetailData object.
+								, connections // Optional ConnectionSet object.
+								, true);
+
+					if (tbd == null)
+					{
+					    // Perform error handling.
+					    // The build context will contain error messages.
+					}
+
+					// Use the build data to create the navigation mesh...
+				</code>
+			
+				<para>
+				Another method is to use the the <codeEntityReference>T:org.critterai.nmbuild.TileBuildTask</codeEntityReference> class to create the tile data.  This method
+				is especially useful if you are building a multi-tile navigation mesh or performing background builds.
+				</para>
+				
+				<code>
+					// Example: Using the tile build task.
+					
+					TileBuildTask task = TileBuildTask.Create(
+							tileX, tileZ	// The tile location.  (0, 0) for single tile meshes.
+							, polyData	  // A PolyMeshData object.
+							, detailData  // Optional PolyMeshDetailData object.
+							, connections // Optional ConnectionSet object.
+							, false       // Is the task tread-safe?  Not applicable in this case.
+							, 0);					// Task priority.  Not applicable in this case.
+					
+					task.Run();
+					
+					if (task.TaskState == BuildTaskState.Aborted)
+					{
+						// Perform error handling.
+						// Check task messages for details.
+					}
+					
+					// Get the tile assets.
+					TileBuildAssets tassets = task.Result;
+					
+					// Use the tile data to build the navigation mesh...
+				</code>
+			
+			</content>
+		
+		</section>
+		
+		<section>
+		
+			<title>Creating the Navigation Mesh</title>
+			
+			<content>
+			
+				<para>Once you have the tile data you can use one of two methods to create the final navigation mesh.</para>
+				
+				<code>
+					// Example: Create a single tile mesh.
+					
+					// Where 'buildData' is a NavmeshTileBuildData object.
+					
+					Navmesh navmesh;
+					NavStatus status = Navmesh.Create(buildData, out nm)));
+					
+					if ((status &amp; NavStatus.Success) == 0)
+					{
+						// Perform error handling.
+					}
+					
+					// Use the navitgation mesh...
+				</code>
+				
+				<para></para>
+				
+				<code>
+					// Example: Create an empty mesh, then add tiles.
+					
+					// Where 'tiles' is a list containing NavmeshTileData objects.
+					
+					NavmeshParams nconfig = new NavmeshParams(meshOrigin
+							, tileSetWidth, tileSetDepth
+							, tiles.Count
+							, maxPolysPerTile);
+					
+					Navmesh navmesh;
+					
+					NavStatus status = Navmesh.Create(nconfig, out navmesh)
+					
+					if ((status &amp; NavStatus.Success) == 0)
+					{
+							// Perform error handling.
+					}
+					
+					// Add the tiles to the navigation mesh.
+					foreach (NavmeshTileData tile in tiles)
+					{
+							// Note: Allowing the navigation mesh to assign the tile reference.
+							uint trash;
+							navmesh.AddTile(tile, Navmesh.NullTile, out trash);
+					}
+					
+					// Use the navigation mesh.
+				</code>
+			
+			</content>
+		
+		</section>
+
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nav.Navmesh</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshParams</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshTileBuildData</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshTileData</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmbuild.TileBuildTask</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmbuild.TileBuildAssets</codeEntityReference>
+
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- NMGen Intro -->
+		<link xlink:href="3D048EB4-7BD1-407a-9442-9DE60C82266E"/> <!-- Compiling Input -->
+		<link xlink:href="FCD34CAE-02FA-48fd-891E-FB82EE360F49"/> <!-- Incremental Builder -->	
+		<link xlink:href="e76dda55-5f91-4c2a-bf8d-fa34de59e82b"/> <!-- Multi-Tile -->	
+	
+	</relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

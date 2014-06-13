@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="critterai-util" default="compile">
+
+    <description>
+        Builds the CritterAI utility library.
+        Override the version property with -Dversion.
+    </description>
+
+    <property file="build.properties"/>
+    
+    <target name="compile"
+        description="Builds the class files.">
+        <mkdir dir="${classes.dir}" />
+        <javac srcdir="${src.dir}" 
+            destdir="${classes.dir}"
+            includeAntRuntime="no"/>
+    </target>
+    
+    <target name="compile-test"
+        depends="compile"
+        description="Generates the test suite class files.">
+        <mkdir dir="${test.classes.dir}" />
+        <javac srcdir="${test.src.dir}" 
+            destdir="${test.classes.dir}"
+            includeAntRuntime="no">
+            <classpath>
+                <pathelement location="${misc.resources.dir}/lib/java/junit-4.7.jar" />
+                <pathelement location="${classes.dir}" />
+            </classpath>
+        </javac>
+    </target>
+    
+    <target name="unit-test" 
+        depends="compile-test"
+        description="Unit test the library.">
+        <junit fork="yes" haltonerror="yes" printsummary="no">
+            <classpath>
+                <pathelement location="${misc.resources.dir}/lib/java/junit-4.7.jar" />
+                <pathelement location="${classes.dir}" />
+                <pathelement location="${test.classes.dir}" />
+            </classpath>
+            <formatter type="brief" usefile="false"/>
+            <test name="org.critterai.math.AllTests" />
+            <test name="org.critterai.math.geom.AllTests" />
+        </junit>
+    </target>
+    
+    <target name="package-jar" 
+        depends="clean, unit-test"
+        description="Creates the jar file for the library.">
+        <mkdir dir="${dist.dir}" />
+        <copy file="${misc.resources.dir}/LCOPY.TXT" 
+            tofile="${classes.dir}/LICENSE.TXT"
+            failonerror="yes"/>
+        <jar destfile="${dist.dir}/${project.fullname}.jar"
+            basedir="${classes.dir}"
+            excludes="**/package-info.*"
+            duplicate="preserve" />
+    </target>
+    
+   <target name="package-dist"
+        depends="package-jar, javadoc"
+        description="Creates the zip distribution for the library.">
+        <copy file="${misc.resources.dir}/LCOPY.TXT" 
+            tofile="${dist.dir}/LICENSE.TXT" 
+            failonerror="yes"/>
+        <copy file="${misc.resources.dir}/RCOPY.TXT" 
+            tofile="${dist.dir}/README.TXT" 
+            failonerror="yes"/>
+        <zip destfile="${build.dir}/${project.fullname}.zip"
+            duplicate="fail">
+            <zipfileset dir="${dist.dir}"
+                includes="**/*"
+                prefix="${project.fullname}" />
+            <zipfileset dir="${doc.dir}"
+                 includes="**/*"
+                 prefix="${project.fullname}/docs" />
+            <zipfileset dir="${src.dir}"
+                             includes="**/*"
+                             prefix="${project.fullname}/src" />
+        </zip>
+       	<copy file="${dist.dir}/${project.fullname}.jar" 
+       	            tofile="${dist.scm.dir}/${project.fullname}.jar" 
+       	            failonerror="yes"/>
+    </target>
+	
+    <target name="javadoc"
+        description="Creates javadoc for the library.">
+        <delete dir="${doc.dir}/api" />    
+        <mkdir dir="${doc.dir}/api" />    
+        <javadoc sourcepath="${src.dir}"
+            packagenames="org.critterai.*"
+            destdir="${doc.dir}/api"
+            access="protected"
+            windowtitle="CritterAI Utilities"
+            overview="${local.misc.dir}/overview.html"
+            failonerror="yes">
+            <link href="http://download.oracle.com/javase/6/docs/api/" />
+            <bottom>
+            <![CDATA[
+                <div align="center">
+                <font size="-1">
+                <p>
+                <a href="http://www.critterai.org/" target="_parent">
+                Project Home
+                </a> and 
+                <a href="http://code.google.com/p/critterai/" target="_parent">
+                Source Code
+                </a>
+                </p>
+                <p>
+                Copyright 2010 Stephen Pratt. All rights reserved. Use is subject to 
+                <a href="http://www.critterai.org/nmgen_codelicense" target="_parent">
+                license terms</a>.
+                </p>
+                </font>
+                </div>
+            ]]>
+            </bottom>
+        </javadoc>
+    </target>
+    
+    <target name="clean"
+        description="Deletes all temporary critterai utility artifacts.">
+        <delete dir="${build.dir}" />
+    </target>
+    
+</project>

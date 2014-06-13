@@ -1,0 +1,36 @@
+>>>>>> NMGen-0.2.0 <<<<<<
+
+Includes breaking API changes.
+
+Improved robustness when dealing with extreme configuration settings.
+(Including bug fixes and changes to algorithms.)
+
+Improved robustness when dealing with outdoor/uneven terrain.
+(Including bug fixes and changes to algorithms.)
+
+Resolved issue 4: Contour Generation Fails Due to Unexpected Internal Null 
+Region
+
+Resolved issue 5: Seams Form Between Triangles within a Region
+
+The smoothingThreshold parameter is now restricted to 0 <= value <= 4.
+
+The maxTraversableSlope parameter is now restricted to 0 <= value <= 85.
+
+Merged LogResults functionality into the IntermediateData class.
+
+New class: CleanNullRegionBorders
+
+Merged the functionality from the CleanNullRegionCorners class into the
+cleanNullRegionBorders class.
+
+Retired the BaseHeightfield class.
+
+Retired the IHeightfieldIterator interface.
+
+General code reformatting: Cleaned white space, sorted class members, 
+reformatted all files to 80 character width.
+
+>>>>>> NMGen-0.1.2 <<<<<<
+
+Initial full release.
