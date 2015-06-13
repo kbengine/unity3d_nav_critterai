@@ -33,6 +33,8 @@ KBEngine在u3d项目中的演示使用, 对导出部分做了一点修改。
 
 ![cainav5](http://www.kbengine.org/assets/img/screenshots/cainav5.jpg)
 
+	(注意: 生成完毕后建议删除Unity3D项目中Assets\Plugins下关于CAINav的文件，否则启动游戏会造成无法导出游戏的错误，原因未知。)
+
 	7：将“srv_”这个文件拷贝到服务端资产目录，例如：“D:\kbe\kbengine\kbengine_demos_assets\res\spaces\xinshoucun”
 	重启服务端后，服务端该场景会加载这个资源用于寻路（注意：要正确寻路服务端实体必须在有效坐标范围内，即必须在Navmesh地表上）
 
