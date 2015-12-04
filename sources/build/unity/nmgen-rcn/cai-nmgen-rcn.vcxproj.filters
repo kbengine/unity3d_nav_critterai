@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="RecastSource">
+      <UniqueIdentifier>{0a58ab29-6bf7-406b-9d3e-42543acc9ba1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NMGenHeaders">
+      <UniqueIdentifier>{9fc59299-2cbc-4a97-9b74-0c5a092bc0da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RecastHeaders">
+      <UniqueIdentifier>{faaf91ed-de49-4adc-881f-fa29e1ac70c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NMGenSource">
+      <UniqueIdentifier>{209cdec0-9473-4453-942f-7716bf1e5b8d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\Recast.cpp">
+      <Filter>RecastSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastAlloc.cpp">
+      <Filter>RecastSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastArea.cpp">
+      <Filter>RecastSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastContour.cpp">
+      <Filter>RecastSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastFilter.cpp">
+      <Filter>RecastSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastLayers.cpp">
+      <Filter>RecastSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastMesh.cpp">
+      <Filter>RecastSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastMeshDetail.cpp">
+      <Filter>RecastSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastRasterization.cpp">
+      <Filter>RecastSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastRegion.cpp">
+      <Filter>RecastSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\BuildContext.cpp">
+      <Filter>NMGenSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\CompactHeightfieldEx.cpp">
+      <Filter>NMGenSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\ContoursEx.cpp">
+      <Filter>NMGenSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\HeightfieldEx.cpp">
+      <Filter>NMGenSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\HeightfieldLayerSet.cpp">
+      <Filter>NMGenSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\NMGen.cpp">
+      <Filter>NMGenSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\PolyMeshDetailEx.cpp">
+      <Filter>NMGenSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\PolyMeshEx.cpp">
+      <Filter>NMGenSource</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\nmgen-rcn\NMGen\Include\NMGen.h">
+      <Filter>NMGenHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nmgen-rcn\Recast\Include\Recast.h">
+      <Filter>RecastHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nmgen-rcn\Recast\Include\RecastAlloc.h">
+      <Filter>RecastHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nmgen-rcn\Recast\Include\RecastAssert.h">
+      <Filter>RecastHeaders</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

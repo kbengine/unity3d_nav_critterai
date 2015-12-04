@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B783B817-8746-4D54-A6CC-664C0A73186F}</ProjectGuid>
+    <RootNamespace>org::critterai</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\bin\$(Configuration)\</OutDir>
+    <IntDir>obj\nmgen\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\bin\$(Configuration)\</OutDir>
+    <IntDir>obj\nmgen\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\..\src\nmgen-rcn\NMGen\Include;..\..\..\src\nmgen-rcn\Recast\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\src\nmgen-rcn\NMGen\Include;..\..\..\src\nmgen-rcn\Recast\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <XMLDocumentationFileName>$(IntDir)</XMLDocumentationFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\BuildContext.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\CompactHeightfieldEx.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\ContoursEx.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\HeightfieldEx.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\HeightfieldLayerSet.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\NMGen.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\PolyMeshDetailEx.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\NMGen\Source\PolyMeshEx.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\Recast.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastAlloc.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastArea.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastContour.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastFilter.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastLayers.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastMesh.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastMeshDetail.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastRasterization.cpp" />
+    <ClCompile Include="..\..\..\src\nmgen-rcn\Recast\Source\RecastRegion.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\nmgen-rcn\NMGen\Include\NMGen.h" />
+    <ClInclude Include="..\..\..\src\nmgen-rcn\Recast\Include\Recast.h" />
+    <ClInclude Include="..\..\..\src\nmgen-rcn\Recast\Include\RecastAlloc.h" />
+    <ClInclude Include="..\..\..\src\nmgen-rcn\Recast\Include\RecastAssert.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
