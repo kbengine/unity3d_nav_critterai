@@ -1,14 +1,16 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cai-util", "util\cai-util.csproj", "{C4B32B85-13F0-42B8-AC89-770BEFEAF022}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cai-nmgen-rcn", "nmgen-rcn\cai-nmgen-rcn.vcproj", "{B783B817-8746-4D54-A6CC-664C0A73186F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cai-nmgen-rcn", "nmgen-rcn\cai-nmgen-rcn.vcxproj", "{B783B817-8746-4D54-A6CC-664C0A73186F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cai-nmgen", "nmgen\cai-nmgen.csproj", "{9DFC1FE0-6469-4A04-AB13-9EAC59087802}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cai-nav", "nav\cai-nav.csproj", "{42218E47-156D-46FF-84E0-119D47B0E4EB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cai-nav-rcn", "nav-rcn\cai-nav-rcn.vcproj", "{319D361B-147F-45AC-854E-50C06FCA3393}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cai-nav-rcn", "nav-rcn\cai-nav-rcn.vcxproj", "{319D361B-147F-45AC-854E-50C06FCA3393}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cai-nmbuild", "nmbuild\cai-nmbuild.csproj", "{08B1606A-B8CD-4725-AF68-A9CC8CEAE336}"
 EndProject

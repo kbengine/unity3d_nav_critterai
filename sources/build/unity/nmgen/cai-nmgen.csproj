@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,6 +12,11 @@
     <AssemblyName>cai-nmgen</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,7 +59,7 @@
       <Project>{C4B32B85-13F0-42b8-AC89-770BEFEAF022}</Project>
       <Name>cai-util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\nmgen-rcn\cai-nmgen-rcn.vcproj">
+    <ProjectReference Include="..\nmgen-rcn\cai-nmgen-rcn.vcxproj">
       <Project>{B783B817-8746-4D54-A6CC-664C0A73186F}</Project>
       <Name>cai-nmgen-rcn</Name>
     </ProjectReference>

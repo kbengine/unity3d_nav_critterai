@@ -140,7 +140,7 @@ extern "C"
 	
 	EXPORT_API const dtQueryFilter* dtcGetFilter(dtCrowd* crowd)
     {
-        return crowd->getFilter();
+        return crowd->getFilter(0);
     }
 
 	EXPORT_API void dtcGetQueryExtents(dtCrowd* crowd, float* extents)

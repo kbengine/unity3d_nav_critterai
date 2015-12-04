@@ -186,7 +186,7 @@ public sealed class CAIBakedNavmeshEditor
 
     [MenuItem(EditorUtil.ViewMenu + "Hide Navmesh", false, EditorUtil.ViewGroup)]
     static void HideNavmesh()
-    { 
+    {
         NavmeshSceneDraw.Instance.Hide();
     }
 }
