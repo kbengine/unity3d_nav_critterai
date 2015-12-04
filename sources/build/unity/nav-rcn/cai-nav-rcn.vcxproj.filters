@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="DetourSource">
+      <UniqueIdentifier>{5f412ec8-d5ad-44c9-98b3-6e282477071e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NavHeaders">
+      <UniqueIdentifier>{1d7b49e0-e139-45b8-96c0-2fa1e2d331c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DetourHeaders">
+      <UniqueIdentifier>{cb849807-5d00-46c0-a65e-084bcedacc2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NavSource">
+      <UniqueIdentifier>{4100dc82-1729-42a8-8588-1af4b42f8700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CrowdHeaders">
+      <UniqueIdentifier>{ec51e2ef-f1c0-4edc-99a7-0cd151093bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CroudSource">
+      <UniqueIdentifier>{900b291d-b799-42b5-86fe-c7f0b2e2dd1c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourAlloc.cpp">
+      <Filter>DetourSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourCommon.cpp">
+      <Filter>DetourSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourNavMesh.cpp">
+      <Filter>DetourSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourNavMeshBuilder.cpp">
+      <Filter>DetourSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourNavMeshQuery.cpp">
+      <Filter>DetourSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourNode.cpp">
+      <Filter>DetourSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Nav\Source\DetourCrowdEx.cpp">
+      <Filter>NavSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Nav\Source\DetourNavMeshBuildEx.cpp">
+      <Filter>NavSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Nav\Source\DetourNavmeshEx.cpp">
+      <Filter>NavSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Nav\Source\DetourNavMeshQueryEx.cpp">
+      <Filter>NavSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Nav\Source\DetourPathCorridorEx.cpp">
+      <Filter>NavSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Nav\Source\DetourQueryFilterEx.cpp">
+      <Filter>NavSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Nav\Source\NavValidation.cpp">
+      <Filter>NavSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourCrowd.cpp">
+      <Filter>CroudSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourLocalBoundary.cpp">
+      <Filter>CroudSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourObstacleAvoidance.cpp">
+      <Filter>CroudSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourPathCorridor.cpp">
+      <Filter>CroudSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourPathQueue.cpp">
+      <Filter>CroudSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourProximityGrid.cpp">
+      <Filter>CroudSource</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\nav-rcn\Nav\Include\DetourEx.h">
+      <Filter>NavHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\Nav\Include\DetourNavMeshEx.h">
+      <Filter>NavHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\Detour\Include\DetourAlloc.h">
+      <Filter>DetourHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\Detour\Include\DetourAssert.h">
+      <Filter>DetourHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\Detour\Include\DetourCommon.h">
+      <Filter>DetourHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\Detour\Include\DetourNavMesh.h">
+      <Filter>DetourHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\Detour\Include\DetourNavMeshBuilder.h">
+      <Filter>DetourHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\Detour\Include\DetourNavMeshQuery.h">
+      <Filter>DetourHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\Detour\Include\DetourNode.h">
+      <Filter>DetourHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\Detour\Include\DetourStatus.h">
+      <Filter>DetourHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourCrowd.h">
+      <Filter>CrowdHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourLocalBoundary.h">
+      <Filter>CrowdHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourObstacleAvoidance.h">
+      <Filter>CrowdHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourPathCorridor.h">
+      <Filter>CrowdHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourPathQueue.h">
+      <Filter>CrowdHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourProximityGrid.h">
+      <Filter>CrowdHeaders</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
