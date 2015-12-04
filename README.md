@@ -4,20 +4,31 @@ unity3d_nav_critterai
 ##原名cai-nav
 KBEngine在u3d项目中的演示使用, 对导出部分做了一点修改。
 
-##使用方法参考项目:
+##编译(Unity):
 
-	1：打开Unity3D创建一个新的3D游戏项目并且在游戏场景中添加一个地形与天空盒子，地形创建后在项目中资源名称叫“New Terrain.asset”
-	2：将unity3d/Assets目录下的所有目录与文件拷贝到你的Unity3D游戏项目对应的Assets下，现在我们的编辑器效果与游戏资产库文件夹中内容如下图
+	1: vs2013及以上打开sources\build\unity\cai-navigation-u3d.sln
+
+	2: 设置每个子项目的References，添加Unity库引用:
+		Unity\Editor\Data\Managed\UnityEditor.dll
+		Unity\Editor\Data\Managed\UnityEngine.dll
+
+	3: 编译，并且将相关文件拷贝到unity3d_nav_critterai\unity3d-x.x
+
+##使用方法参考项目:
+	
+	1：将unity3d_nav_critterai\unity3d-x.x\Assets拷贝到Unity项目对应的Assets中
+	2：打开Unity3D创建一个新的3D游戏项目并且在游戏场景中添加一个地形与天空盒子，地形创建后在项目中资源名称叫“New Terrain.asset”
+	3：将unity3d/Assets目录下的所有目录与文件拷贝到你的Unity3D游戏项目对应的Assets下，现在我们的编辑器效果与游戏资产库文件夹中内容如下图
 
 ![cainav1](http://www.kbengine.org/assets/img/screenshots/cainav1.jpg)
 
-	3：在游戏项目菜单中选择（CritterAI->Create NMGen Assets->Navmesh Build : Standard）初始化，初始化完毕后
+	4：在游戏项目菜单中选择（CritterAI->Create NMGen Assets->Navmesh Build : Standard）初始化，初始化完毕后
 	项目目录中将出现几个文件，他们如下:
 		CAIBakedNavmesh.asset
 		MeshCompiler.asset
 		NavmeshBuild.asset
 	
-	4：添加一个能生成地形寻路网格的Compiler，（CritterAI->Create NMGen Assets->Compiler : Terrain）
+	5：添加一个能生成地形寻路网格的Compiler，（CritterAI->Create NMGen Assets->Compiler : Terrain）
 
 ![cainav2](http://www.kbengine.org/assets/img/screenshots/cainav2.jpg)
 
@@ -25,17 +36,17 @@ KBEngine在u3d项目中的演示使用, 对导出部分做了一点修改。
 
 ![cainav3](http://www.kbengine.org/assets/img/screenshots/cainav3.jpg)
 
-	5：开始生成Navmesh
+	6：开始生成Navmesh
 
 ![cainav4](http://www.kbengine.org/assets/img/screenshots/cainav4.jpg)
 
-	6：导出为文件，此时会出现2个文件，其中“srv_”开头的文件用于服务端寻路，另一个则可用于客户端使用该插件来寻路。
+	7：导出为文件，此时会出现2个文件，其中“srv_”开头的文件用于服务端寻路，另一个则可用于客户端使用该插件来寻路。
 
 ![cainav5](http://www.kbengine.org/assets/img/screenshots/cainav5.jpg)
 
 	(注意: 生成完毕后建议删除Unity3D项目中Assets\Plugins下关于CAINav的文件，否则启动游戏会造成无法导出游戏的错误，原因未知。)
 
-	7：将“srv_”这个文件拷贝到服务端资产目录，例如：“D:\kbe\kbengine\kbengine_demos_assets\res\spaces\xinshoucun”
+	8：将“srv_”这个文件拷贝到服务端资产目录，例如：“D:\kbe\kbengine\kbengine_demos_assets\res\spaces\xinshoucun”
 	重启服务端后，服务端该场景会加载这个资源用于寻路（注意：要正确寻路服务端实体必须在有效坐标范围内，即必须在Navmesh地表上）
 
 	（更多功能请参考该插件官网：http://www.critterai.org/projects/cainav/）
