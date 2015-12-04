@@ -1,0 +1,13 @@
+sources\src\main\Assets\CAI\nav-u3d\Editor\CAIBakedNavmeshEditor.cs
+private static void SaveMesh(CAIBakedNavmesh targ, string filePath):
+        fs = new FileStream(filePath, FileMode.Open); 
+        
+        System.Object obj = formatter.Deserialize(fs);
+		byte[] datas = (byte[])obj;
+		
+		string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(filePath);
+		filePath = filePath.Replace(fileNameWithoutExtension + ".", "srv_" + fileNameWithoutExtension + ".");
+		FileStream fs1 = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+        fs1.Write(datas, 0, datas.Length);
+        fs1.Close();
+        fs.Close();
