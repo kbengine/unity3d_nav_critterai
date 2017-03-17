@@ -12,7 +12,7 @@ KBEngine在u3d项目中的演示使用, 对导出部分做了一点修改。
 		Unity\Editor\Data\Managed\UnityEditor.dll
 		Unity\Editor\Data\Managed\UnityEngine.dll
 
-	3: 编译，并且将相关文件拷贝到unity3d_nav_critterai\unity3d-x.x
+	3: 编译，并且将相关文件拷贝到unity3d_nav_critterai\unity3d-x.x（具体文件参考已经编译好的unity3d-5.x-64bit中的内容）
 
 ##使用方法参考项目:
 	
