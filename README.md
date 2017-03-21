@@ -1,10 +1,10 @@
 unity3d_nav_critterai
 =============
 
-##原名cai-nav
+## 原名cai-nav
 KBEngine在u3d项目中的演示使用, 对导出部分做了一点修改。
 
-##编译(Unity): (注意：unity3d-4.x、unity3d-5.x-32bit、unity3d-5.x-64bit中已经有编译好的文件， 没有做源码修改的话无需重新编译，直接使用即可)
+## 编译(Unity): (注意：unity3d-4.x、unity3d-5.x-32bit、unity3d-5.x-64bit中已经有编译好的文件， 没有做源码修改的话无需重新编译，直接使用即可)
 	
 	1: vs2013及以上打开sources\build\unity\cai-navigation-u3d.sln
 
@@ -14,7 +14,7 @@ KBEngine在u3d项目中的演示使用, 对导出部分做了一点修改。
 
 	3: 编译，并且将相关文件拷贝到unity3d_nav_critterai\unity3d-x.x（具体文件参考已经编译好的unity3d-5.x-64bit中的内容）
 
-##使用方法参考项目:
+## 使用方法参考项目:
 	
 	1：将unity3d_nav_critterai\unity3d-x.x\Assets拷贝到Unity项目对应的Assets中
 	2：打开Unity3D创建一个新的3D游戏项目并且在游戏场景中添加一个地形与天空盒子，地形创建后在项目中资源名称叫“New Terrain.asset”
@@ -52,7 +52,7 @@ KBEngine在u3d项目中的演示使用, 对导出部分做了一点修改。
 	（更多功能请参考该插件官网：http://www.critterai.org/projects/cainav/）
 
 
-##演示项目参考：
+## 演示项目参考：
 
 	https://github.com/kbengine/kbengine_unity3d_warring
 
