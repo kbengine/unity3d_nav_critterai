@@ -163,7 +163,7 @@ public sealed class CAIBakedNavmeshEditor
 		byte[] datas = (byte[])obj;
 		
 		string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(filePath);
-		filePath = filePath.Replace(fileNameWithoutExtension + ".", "srv_" + fileNameWithoutExtension + ".");
+		filePath = filePath.Replace(fileNameWithoutExtension + ".", "srv_" + fileNameWithoutExtension + ".");  
 		FileStream fs1 = new FileStream(filePath, FileMode.Create, FileAccess.Write);
         fs1.Write(datas, 0, datas.Length);
         fs1.Close();
