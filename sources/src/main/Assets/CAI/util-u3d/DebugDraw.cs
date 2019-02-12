@@ -90,15 +90,18 @@ namespace org.critterai.u3d
         {
             get
             {
-                if (!mSimpleMaterial)
+                if (mSimpleMaterial == null)
                 {
-                    mSimpleMaterial = new Material(
-                        "Shader \"Lines/Colored Blended\" {"
-                        + "SubShader { Pass { "
-                        + "	BindChannels { Bind \"Color\",color } "
-                        + "	Blend SrcAlpha OneMinusSrcAlpha "
-                        + "	ZWrite Off Cull Off Fog { Mode Off } "
-                        + "} } }");
+                    // mSimpleMaterial = new Material(
+                        // "Shader \"Lines/Colored Blended\" {"
+                        // + "SubShader { Pass { "
+                        // + "	BindChannels { Bind \"Color\",color } "
+                        // + "	Blend SrcAlpha OneMinusSrcAlpha "
+                        // + "	ZWrite Off Cull Off Fog { Mode Off } "
+                        // + "} } }");
+					
+					Shader shader = Shader.Find("UI/Default");
+                    mSimpleMaterial = new Material(shader);      
                     mSimpleMaterial.hideFlags = HideFlags.HideAndDontSave;
                     mSimpleMaterial.shader.hideFlags = HideFlags.HideAndDontSave;
                 }
