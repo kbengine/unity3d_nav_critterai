@@ -247,10 +247,11 @@ namespace org.critterai.nav.u3d
             {
                 if (colorId == -1)
                 {
-                    if (polyArea == 0)
-                        result = new Color(0, 0.75f, 1, surfaceAlpha);
-                    else
-                        result = ColorUtil.IntToColor(polyArea, surfaceAlpha);
+					return (new Color32(136, 204, 102, 255));
+                    // if (polyArea == 0)
+                        // result = new Color(0, 0.75f, 1, surfaceAlpha);
+                    // else
+                        // result = ColorUtil.IntToColor(polyArea, surfaceAlpha);
                 }
                 else
                     result = ColorUtil.IntToColor(colorId, surfaceAlpha);
