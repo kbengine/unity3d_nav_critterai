@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1367822575, guid: af616ed3207e51f40b76a595803efeee, type: 3}
+  m_Name: CAINavEditorSettings
+  m_EditorClassIdentifier: 
+  m_Name: CAINavEditorSettings
+  areaNames:
+  - Not Walkable
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - <Undefined>
+  - Water
+  - Default
+  flagNames:
+  - Default
+  - Jump
+  - Swim
+  - Blocked
+  - Flag 0x10
+  - Flag 0x20
+  - Flag 0x40
+  - Flag 0x80
+  - Flag 0x100
+  - Flag 0x200
+  - Flag 0x400
+  - Flag 0x800
+  - Flag 0x1000
+  - Flag 0x2000
+  - Flag 0x4000
+  - Flag 0x8000
+  avoidanceNames:
+  - Low
+  - Medium
+  - Good
+  - High
+  - Quality 4
+  - Quality 5
+  - Quality 6
+  - Quality 7
