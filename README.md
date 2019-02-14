@@ -4,7 +4,7 @@ unity3d_nav_critterai
 ## 原名cai-nav
 KBEngine在u3d项目中的演示使用, 对导出部分做了一点修改。
 
-## 编译(Unity): (注意：unity3d-4.x、unity3d-5.x-32bit、unity3d-5.x-64bit中已经有编译好的文件， 没有做源码修改的话无需重新编译，直接使用即可)
+## 编译(Unity): (注意：unity3d-x-64bit中已经有编译好的文件， 没有做源码修改的话无需重新编译，直接使用即可)
 	
 	1: vs2013及以上打开sources\build\unity\cai-navigation-u3d.sln
 
