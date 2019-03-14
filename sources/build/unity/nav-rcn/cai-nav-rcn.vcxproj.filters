@@ -78,6 +78,9 @@
     <ClCompile Include="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourProximityGrid.cpp">
       <Filter>CroudSource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourAssert.cpp">
+      <Filter>DetourSource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\nav-rcn\Nav\Include\DetourEx.h">

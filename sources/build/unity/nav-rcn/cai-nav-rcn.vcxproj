@@ -170,6 +170,7 @@
     <ClCompile Include="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourPathQueue.cpp" />
     <ClCompile Include="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourProximityGrid.cpp" />
     <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourAlloc.cpp" />
+    <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourAssert.cpp" />
     <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourCommon.cpp" />
     <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourNavMesh.cpp" />
     <ClCompile Include="..\..\..\src\nav-rcn\Detour\Source\DetourNavMeshBuilder.cpp" />
